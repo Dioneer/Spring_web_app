@@ -14,3 +14,17 @@ services:
       POSTGRES_DB: postgres
     ports:
       - 5433:5432
+
+  postgres2:
+    image: postgres:latest
+    restart: always
+    container_name: payment
+    volumes:
+      - ./payment/src/main/resources/sql:/var/lib/postgres/data
+      - ./payment/src/main/resources/sql/create.sql:/docker-entrypoint-initdb.d/data.sql
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5434:5432
