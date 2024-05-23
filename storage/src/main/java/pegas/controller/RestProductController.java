@@ -2,11 +2,16 @@ package pegas.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import pegas.dto.CreateEditProductDTO;
+import pegas.dto.OrderDTO;
 import pegas.dto.ProductFilter;
 import pegas.dto.ReadProductDTO;
 import pegas.service.ProductService;
@@ -16,7 +21,7 @@ import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("api/v1")
+@RequestMapping("/api/v1")
 public class RestProductController {
     private final ProductService productService;
 
@@ -35,9 +40,16 @@ public class RestProductController {
     public ResponseEntity<?> findAllByFilter(@RequestBody ProductFilter filter, Pageable pageable){
         try{
             List<ReadProductDTO> products = productService.findAll(filter, pageable);
-            return ResponseEntity.ok().body(products);
+            if(!products.isEmpty()) {
+                return ResponseEntity.ok().body(products);
+            }else{
+                return new ResponseEntity<>(new ResponseError
+                        (HttpStatus.CONTINUE.value(),"No suitable products"),
+                        HttpStatus.NOT_FOUND);
+            }
         }catch(Exception e){
-            return new ResponseEntity<>(new ResponseError(HttpStatus.NOT_FOUND.value(), "No suitable products"),
+            return new ResponseEntity<>(new ResponseError
+                    (HttpStatus.NOT_FOUND.value(), "Some problems with fields"),
                     HttpStatus.NOT_FOUND);
         }
     }
@@ -48,22 +60,24 @@ public class RestProductController {
                     .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping
-    public ResponseEntity<?> create(@RequestBody CreateEditProductDTO create){
+    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> create(@RequestBody @Validated CreateEditProductDTO create){
         try{
-            return ResponseEntity.ok().body(productService.create(create));
+            return ResponseEntity.status(201).body(productService.create(create));
         }catch(Exception e){
-            return new ResponseEntity<>(new ResponseError(HttpStatus.BAD_REQUEST.value(), "Product was not save"),
+            return new ResponseEntity<>(new ResponseError
+                    (HttpStatus.BAD_REQUEST.value(), "Product was not save"),
                     HttpStatus.BAD_REQUEST);
         }
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<?> update(@RequestBody CreateEditProductDTO update, @PathVariable Long id){
+    @PutMapping(value = "/{id}")
+    public ResponseEntity<?> update(@RequestBody @Validated CreateEditProductDTO update, @PathVariable Long id){
         try{
             return ResponseEntity.ok().body(productService.update(update, id));
         }catch(Exception e){
-            return new ResponseEntity<>(new ResponseError(HttpStatus.BAD_REQUEST.value(), "Product was not update"),
+            return new ResponseEntity<>(new ResponseError
+                    (HttpStatus.BAD_REQUEST.value(), "Product was not update"),
                     HttpStatus.BAD_REQUEST);
         }
     }
@@ -73,9 +87,77 @@ public class RestProductController {
         try{
             return ResponseEntity.ok().body(productService.deleteProduct(id));
         }catch(Exception e){
-            return new ResponseEntity<>(new ResponseError(HttpStatus.BAD_REQUEST.value(), "Product was not delete"),
+            return new ResponseEntity<>(new ResponseError
+                    (HttpStatus.BAD_REQUEST.value(), "Product was not delete"),
                     HttpStatus.BAD_REQUEST);
         }
     }
+
+    @PostMapping("/{id}/sale")
+    public ResponseEntity<?> reduceAmountForSale(@PathVariable("id") Long id,
+                                                 @Validated @RequestBody OrderDTO orderDTO) {
+        try{
+            if(productService.reduceAmount(id, orderDTO.getAmount())) {
+                return ResponseEntity.ok().body(true);
+            }else {
+                return ResponseEntity.badRequest()
+                        .body(new ResponseEntity<>(new ResponseError
+                                (HttpStatus.BAD_REQUEST.value(), "not enough amount"),
+                        HttpStatus.BAD_REQUEST));
+            }
+        }catch(Exception e) {
+            return new ResponseEntity<>(new ResponseError
+                    (HttpStatus.BAD_REQUEST.value(), "Some problems with fields"),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/{id}/reservation")
+    public ResponseEntity<?> reservation(@PathVariable("id") Long id, @Validated @RequestBody OrderDTO orderDTO){
+        try{
+            if(productService.reservation(id, orderDTO.getAmount())) {
+                return ResponseEntity.ok().body(true);
+            }else{
+                return new ResponseEntity<>(new ResponseError
+                        (HttpStatus.BAD_REQUEST.value(), "Not enough amount"),
+                    HttpStatus.BAD_REQUEST);
+            }
+        }catch(Exception e) {
+            return new ResponseEntity<>(new ResponseError
+                    (HttpStatus.BAD_REQUEST.value(), "Some problems with fields"),
+                    HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping("/{id}/unreservation")
+    public ResponseEntity<?> deReservation(@PathVariable("id") Long id, @Validated @RequestBody OrderDTO orderDTO){
+        try{
+            if(productService.deReservation(id, orderDTO.getAmount())) {
+                return ResponseEntity.ok().body(true);
+            }else{
+                return new ResponseEntity<>(new ResponseError
+                        (HttpStatus.BAD_REQUEST.value(), "Not enough amount"),
+                    HttpStatus.BAD_REQUEST);
+         }
+        }catch(Exception e) {
+            return new ResponseEntity<>(new ResponseError
+                (HttpStatus.BAD_REQUEST.value(), "Some problems with fields"),
+                HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/{id}/avatar", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<?> findAvatar(@PathVariable("id") Long id){
+        byte[] bytes;
+        try {
+            bytes = productService.findAvatar(id).orElseThrow();
+        } catch (RuntimeException e){
+            return new ResponseEntity<>(new ResponseError
+                    (HttpStatus.NOT_FOUND.value(), "image is absent today"),HttpStatus.NOT_FOUND);
+        }
+        return ResponseEntity.ok().header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_OCTET_STREAM_VALUE)
+                .contentLength(bytes.length).body(bytes);
+    }
+
 
 }
