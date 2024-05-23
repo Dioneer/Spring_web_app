@@ -17,4 +17,4 @@ spring:
       hbm2ddl.auto: validate
 app:
   image:
-    path: ./images
+    path: ./storage/images

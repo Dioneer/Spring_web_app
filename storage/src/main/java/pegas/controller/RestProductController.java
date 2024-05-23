@@ -60,8 +60,8 @@ public class RestProductController {
                     .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> create(@RequestBody @Validated CreateEditProductDTO create){
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<?> create(@ModelAttribute @Validated CreateEditProductDTO create){
         try{
             return ResponseEntity.status(201).body(productService.create(create));
         }catch(Exception e){
@@ -71,8 +71,9 @@ public class RestProductController {
         }
     }
 
-    @PutMapping(value = "/{id}")
-    public ResponseEntity<?> update(@RequestBody @Validated CreateEditProductDTO update, @PathVariable Long id){
+    @PutMapping(value = "/{id}", consumes = MediaType.MULTIPART_FORM_DATA_VALUE,
+            produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> update(@ModelAttribute @Validated CreateEditProductDTO update, @PathVariable Long id){
         try{
             return ResponseEntity.ok().body(productService.update(update, id));
         }catch(Exception e){

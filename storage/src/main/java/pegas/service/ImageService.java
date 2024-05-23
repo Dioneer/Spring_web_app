@@ -3,7 +3,6 @@ package pegas.service;
 import lombok.SneakyThrows;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import pegas.repository.FilterRepository;
 
 import java.io.InputStream;
 import java.nio.file.Files;
@@ -13,7 +12,7 @@ import java.util.Optional;
 
 @Service
 public class ImageService {
-    @Value("$(app.image.path)")
+    @Value("${app.image.path}")
     private String bucket;
 
     @SneakyThrows
