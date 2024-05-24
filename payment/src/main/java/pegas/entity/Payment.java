@@ -18,8 +18,11 @@ public class Payment {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(nullable = false, unique = true, name = "cart_number")
+    @Column(nullable = false, unique = true, name = "client_number")
     private Long cartNumber;
-    private BigDecimal balance;
+    @Column(name = "storage_balance")
+    private BigDecimal storageBalance;
+    @Column(name = "cart_balance")
+    private BigDecimal cartBalance;
 
 }

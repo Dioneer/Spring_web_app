@@ -6,7 +6,6 @@ services:
     restart: always
     container_name: web_shop
     volumes:
-      - ./storage/src/main/resources/sql:/var/lib/postgres/data
       - ./storage/src/main/resources/sql/create.sql:/docker-entrypoint-initdb.d/data.sql
     environment:
       POSTGRES_PASSWORD: 123456
@@ -18,9 +17,8 @@ services:
   postgres2:
     image: postgres:latest
     restart: always
-    container_name: payment
+    container_name: payments
     volumes:
-      - ./payment/src/main/resources/sql:/var/lib/postgres/data
       - ./payment/src/main/resources/sql/create.sql:/docker-entrypoint-initdb.d/data.sql
     environment:
       POSTGRES_PASSWORD: 123456
@@ -28,3 +26,16 @@ services:
       POSTGRES_DB: postgres
     ports:
       - 5434:5432
+
+  postgres3:
+    image: postgres:latest
+    restart: always
+    container_name: clients
+    volumes:
+      - ./client/src/main/resources/sql/create.sql:/docker-entrypoint-initdb.d/data.sql
+    environment:
+      POSTGRES_PASSWORD: 123456
+      POSTGRES_USER: postgres
+      POSTGRES_DB: postgres
+    ports:
+      - 5435:5432

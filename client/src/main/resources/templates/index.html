@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Магазин на диване</title>
+</head>
+<body>
+<div class="container mt-5">
+    <h1 class="text-center">Магазин на диване</h1>
+
+    <div>
+        <div th:each="product: ${products}">
+            <div class="card">
+                <img th:src="'/' + ${product.getProductImage()}" alt="Product Image">
+                <div class="card-body">
+                    <h5 th:text="${product.productMark}"></h5>
+                    <p th:text="${product.productModel}"></p>
+                    <p th:text="${product.price}"></p>
+                    <p th:text="${product.amount}"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
