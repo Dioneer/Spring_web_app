@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestTemplate;
+import pegas.aspect.TrackUserAction;
 import pegas.dto.payment.PaymentDTO;
 import pegas.dto.payment.TransferDTO;
 import pegas.dto.payment.UserCartDto;
@@ -28,23 +29,35 @@ public class PaymentApi {
     public PaymentDTO[] allPayments(){
         return restClient.post()
                 .uri(paymentApi+"/all")
+                .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .body(PaymentDTO[].class);
     }
 
+    public PaymentDTO findById(Long id){
+        return restClient.post()
+                .uri(paymentApi+"/"+id)
+                .accept(APPLICATION_JSON)
+                .retrieve()
+                .body(PaymentDTO.class);
+    }
+
     public PaymentDTO cart(UserCartDto userCartDto){
         return restClient.post()
                 .uri(paymentApi+"/personalInfo")
+                .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .body(userCartDto)
                 .retrieve()
                 .body(PaymentDTO.class);
     }
 
+    @TrackUserAction
     public String pay(TransferDTO transferDTO){
         return restClient.post()
                 .uri(paymentApi)
+                .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .body(transferDTO)
                 .retrieve()

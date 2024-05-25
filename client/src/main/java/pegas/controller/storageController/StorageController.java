@@ -1,8 +1,6 @@
 package pegas.controller.storageController;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,7 +15,6 @@ import pegas.service.storageService.StorageApi;
 
 import java.util.Optional;
 
-@Slf4j
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/v3/storage")
@@ -75,12 +72,6 @@ public class StorageController {
         }
         storageApi.sale(orderDTO, id);
         return "redirect:/v3/storage";
-    }
-
-    @ExceptionHandler(Exception.class)
-    public String handlerException(Exception exception, HttpServletRequest request){
-        log.error(request.getContextPath() + "failed request", exception);
-        return "error";
     }
 
 }

@@ -4,7 +4,7 @@ create table if not exists users(
     birthday_date date,
     firstname varchar(64) not null,
     lastname varchar(64),
-    role varchar(32),
+    role varchar(32) not null,
     password varchar(128) default '{noop}123'
 );
 --drop table users;

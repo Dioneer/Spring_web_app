@@ -1,8 +1,6 @@
 package pegas.controller.clientController;
 
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,17 +10,35 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pegas.dto.userdto.CreateUpdateUserDTO;
+import pegas.dto.userdto.LoginDTO;
 import pegas.dto.userdto.ReadUserDTO;
 import pegas.entity.Role;
 import pegas.service.clientService.ClientService;
 
-@Slf4j
+import java.util.Arrays;
+import java.util.List;
+
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("v3/users")
 public class ClientController {
 
     private final ClientService clientService;
+
+    @ModelAttribute("roles")
+    public List<Role> getRole(){
+        return Arrays.asList(Role.values());
+    }
+
+    @GetMapping
+    public String start(){
+        return "login";
+    }
+
+    @PostMapping("/login")
+    public String authorisation(Model model, @ModelAttribute("login") LoginDTO loginDTO){
+        return "redirect:/login";
+    }
 
     @GetMapping("/{id}")
     public String findById(Model model, @PathVariable("id") Long id){
@@ -37,9 +53,9 @@ public class ClientController {
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("user", update);
             redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
-            return "redirect:/v3/users/"+id;
+            return "redirect:/v3/users/{id}";
         }
-        return "asd";
+        return "user";
     }
 
     @PostMapping("/create")
@@ -48,10 +64,10 @@ public class ClientController {
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("user", create);
             redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
-            return "redirect:/v3/users/registration";
+            return "redirect:/v3/users";
         }
         ReadUserDTO read = clientService.create(create);
-        return "redirect:/v3/users/"+read.getFirstname();
+        return "redirect:/v3/users/"+read.getId();
     }
 
     @GetMapping("/registration")
@@ -66,13 +82,7 @@ public class ClientController {
         if(!clientService.deleteUser(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return "redirect:/v3/users/"+id;
-    }
-
-    @ExceptionHandler(Exception.class)
-    public String handlerException(Exception exception, HttpServletRequest request){
-        log.error(request.getContextPath() + "failed request", exception);
-        return "error";
+        return "redirect:/v3/users/{id}";
     }
 
 }

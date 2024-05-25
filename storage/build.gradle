@@ -30,7 +30,8 @@ tasks.withType(JavaCompile) {
 
 dependencies {
   implementation 'org.springframework.boot:spring-boot-starter'
-  compileOnly 'org.projectlombok:lombok'
+    testImplementation 'org.projectlombok:lombok:1.18.28'
+    compileOnly 'org.projectlombok:lombok'
   annotationProcessor 'org.projectlombok:lombok'
   implementation 'org.postgresql:postgresql'
   implementation 'org.springframework.boot:spring-boot-starter-data-jpa'

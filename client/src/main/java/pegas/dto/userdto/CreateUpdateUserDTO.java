@@ -19,5 +19,6 @@ public class CreateUpdateUserDTO {
     @Size(min=4, max=50)
     String firstname;
     String lastname;
+    @NotBlank
     Role role;
 }

@@ -4,10 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import pegas.dto.UserDataFind;
 import pegas.dto.Transfer;
@@ -25,6 +22,12 @@ public class PaymentController {
     @PostMapping("/all")
     public ResponseEntity<List<Payment>> findAll(){
         return ResponseEntity.ok().body(paymentService.findAll());
+    }
+
+    @PostMapping("/{id}")
+    public ResponseEntity<Payment> findByUserId(@PathVariable("id") Long id){
+        return ResponseEntity.ok().body(paymentService.findByUserId(id)
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "cart not found")));
     }
 
     @PostMapping("/personalInfo")

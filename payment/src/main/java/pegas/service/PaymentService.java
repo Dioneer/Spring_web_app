@@ -22,6 +22,11 @@ public class PaymentService {
         return Optional.of(paymentRepository.findByCartNumber(userDataFind.getCartNumber()));
     }
 
+    public Optional<Payment> findByUserId(Long id){
+        return Optional.of(paymentRepository.findByUserId(id));
+    }
+
+
     public List<Payment> findAll(){
         return Optional.of(paymentRepository.findAll())
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"nothing was found"));

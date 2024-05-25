@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="storage" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="pegas.ApplicationRunner" />
+    <option name="MAIN_CLASS_NAME" value="pegas.ApplicationRunner1" />
     <module name="storage.main" />
     <extension name="coverage">
       <pattern>
