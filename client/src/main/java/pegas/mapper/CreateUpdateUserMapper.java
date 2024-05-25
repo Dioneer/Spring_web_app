@@ -1,7 +1,7 @@
 package pegas.mapper;
 
 import org.springframework.stereotype.Component;
-import pegas.dto.CreateUpdateUserDTO;
+import pegas.dto.userdto.CreateUpdateUserDTO;
 import pegas.entity.User;
 
 @Component

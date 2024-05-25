@@ -1,7 +1,7 @@
 package pegas.service.clientService;
 
-import pegas.dto.CreateUpdateUserDTO;
-import pegas.dto.ReadUserDTO;
+import pegas.dto.userdto.CreateUpdateUserDTO;
+import pegas.dto.userdto.ReadUserDTO;
 
 import java.util.Optional;
 

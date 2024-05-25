@@ -13,7 +13,6 @@ public class CartValidationImpl implements ConstraintValidator<CartValidation, T
     @Override
     public boolean isValid(Transfer transfer, ConstraintValidatorContext context) {
         String str = Long.toString(transfer.getCartNumber());
-        System.out.println(str);
-        return hasText(str);
+        return hasText(str) && str.length()>4 && str.length()<11;
     }
 }

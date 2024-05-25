@@ -1,6 +1,6 @@
-package pegas.entity.payment;
+package pegas.dto.payment;
 
-import jakarta.persistence.Column;
+import jakarta.validation.constraints.Positive;
 import lombok.Value;
 
 import java.math.BigDecimal;
@@ -9,6 +9,8 @@ import java.math.BigDecimal;
 public class PaymentDTO {
     Long id;
     Long cartNumber;
+    @Positive
     BigDecimal storageBalance;
+    @Positive
     BigDecimal cartBalance;
 }

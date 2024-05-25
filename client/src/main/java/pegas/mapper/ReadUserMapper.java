@@ -1,10 +1,12 @@
 package pegas.mapper;
 
 import lombok.Value;
-import pegas.dto.ReadUserDTO;
+import org.springframework.stereotype.Component;
+import pegas.dto.userdto.ReadUserDTO;
 import pegas.entity.User;
 
 @Value
+@Component
 public class ReadUserMapper implements Mapper<User, ReadUserDTO>{
     @Override
     public ReadUserDTO map(User user) {

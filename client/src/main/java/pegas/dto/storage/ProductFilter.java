@@ -1,4 +1,4 @@
-package pegas.entity.storage;
+package pegas.dto.storage;
 
 import lombok.Value;
 

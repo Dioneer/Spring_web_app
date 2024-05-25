@@ -1,4 +1,4 @@
-package pegas.entity.payment;
+package pegas.dto.payment;
 
 import jakarta.validation.constraints.Positive;
 import lombok.Value;

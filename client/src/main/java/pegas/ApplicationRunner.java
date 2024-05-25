@@ -10,10 +10,6 @@ import org.springframework.web.client.RestTemplate;
 public class ApplicationRunner {
 
     @Bean
-    public RestTemplate template(){
-        return new RestTemplate();
-    }
-    @Bean
     public RestClient client(){
         return RestClient.builder().build();
     }

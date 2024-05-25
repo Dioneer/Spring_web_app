@@ -1,4 +1,4 @@
-package pegas.entity.storage;
+package pegas.dto.storage;
 
 import jakarta.validation.constraints.Positive;
 import lombok.Value;
