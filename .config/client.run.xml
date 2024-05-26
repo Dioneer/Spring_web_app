@@ -1,6 +1,6 @@
 <component name="ProjectRunConfigurationManager">
   <configuration default="false" name="client" type="Application" factoryName="Application">
-    <option name="MAIN_CLASS_NAME" value="pegas.ApplicationRunner1" />
+    <option name="MAIN_CLASS_NAME" value="pegas.ApplicationRunner" />
     <module name="client.main" />
     <extension name="coverage">
       <pattern>

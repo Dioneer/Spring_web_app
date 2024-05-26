@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
@@ -13,6 +14,8 @@ import pegas.dto.payment.PaymentDTO;
 import pegas.dto.payment.TransferDTO;
 import pegas.dto.payment.UserCartDto;
 import pegas.dto.storage.ReadProductDTO;
+import pegas.service.exceptions.RequestErrorException;
+import pegas.service.exceptions.ServerErrorException;
 
 import java.util.List;
 
@@ -32,6 +35,12 @@ public class PaymentApi {
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        (req, res) -> {
+                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        (req, res) -> {
+                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
                 .body(PaymentDTO[].class);
     }
 
@@ -40,6 +49,12 @@ public class PaymentApi {
                 .uri(paymentApi+"/"+id)
                 .accept(APPLICATION_JSON)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        (req, res) -> {
+                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        (req, res) -> {
+                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
                 .body(PaymentDTO.class);
     }
 
@@ -50,6 +65,12 @@ public class PaymentApi {
                 .accept(APPLICATION_JSON)
                 .body(userCartDto)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        (req, res) -> {
+                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        (req, res) -> {
+                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
                 .body(PaymentDTO.class);
     }
 
@@ -61,6 +82,12 @@ public class PaymentApi {
                 .accept(APPLICATION_JSON)
                 .body(transferDTO)
                 .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        (req, res) -> {
+                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        (req, res) -> {
+                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
                 .body(String.class);
     }
 

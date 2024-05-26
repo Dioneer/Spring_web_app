@@ -12,17 +12,17 @@ import pegas.service.exceptions.ServerErrorException;
 public class AdviceController {
     @ExceptionHandler(RequestErrorException.class)
     public String handlerException1(Exception exception, RequestErrorException e){
-        log.error(e.getMessage() + "not found", exception);
+        log.error(e.getMessage() + "not found", exception.getMessage());
         return "error";
     }
     @ExceptionHandler(ServerErrorException.class)
     public String handlerException2(Exception exception, ServerErrorException e){
-        log.error(e.getMessage() + "failed request", exception);
+        log.error(e.getMessage() + "failed request", exception.getMessage());
         return "error";
     }
     @ExceptionHandler(ResponseStatusException.class)
     public String handlerException3(Exception exception, ResponseStatusException e){
-        log.error(e.getMessage() + "failed request", exception);
+        log.error(e.getMessage() + "failed request", exception.getMessage());
         return "error";
     }
 }

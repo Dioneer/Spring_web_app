@@ -9,10 +9,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.context.ContextConfiguration;
 import pegas.ApplicationRunner1;
 import pegas.dto.ReadProductDTO;
-import pegas.entity.Product;
 import pegas.repository.ProductRepository;
 import pegas.service.ProductService;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -28,12 +29,18 @@ public class ProductServiceTest {
 
     @Test
     void findById(){
-        Mockito.doReturn(Optional.of(new Product())).when(productRepository).findById(PRODUCT_ID);
-        Optional<ReadProductDTO> assertResult = productService.findById(PRODUCT_ID);
-        assertTrue(assertResult.isPresent());
+        ReadProductDTO product = new ReadProductDTO(1L,"Материнская плата MSI PRO", "H610M-E DDR4",
+                "7990.00", 10, 0, null);
+        List<ReadProductDTO> arr = new ArrayList<>();
+        arr.add(product);
+
+        Mockito.doReturn(arr).when(productRepository).findAll();
+
+        List<ReadProductDTO> assertResult = productService.findAll();
+        assertFalse(assertResult.isEmpty());
         ReadProductDTO expectResult = new ReadProductDTO(1L,"Материнская плата MSI PRO", "H610M-E DDR4",
-"7990.00", 10, 0, null);
-        assertResult.ifPresent(actual-> assertEquals(expectResult, actual));
+                "7990.00", 10, 0, null);
+        assertEquals(expectResult, assertResult);
     }
 
 }

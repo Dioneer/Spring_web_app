@@ -19,7 +19,6 @@ import pegas.mapper.CreateEditProductMapper;
 import pegas.mapper.ReadProductMapper;
 import pegas.repository.ProductRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,13 +41,14 @@ public class ProductService implements CRUDService{
 
     @Override
     public List<ReadProductDTO> findAll(ProductFilter filter,Pageable pageable){
-        var predicate = QPredicates.builder()
-                .add(filter.productMark(), product.productMark::containsIgnoreCase)
-                .add(filter.productModel(), product.productModel::containsIgnoreCase)
-                .add(filter.price(), product.price::eq)
-                .build();
-        return Optional.of(repository.findAll(predicate,pageable).stream().map(read::map).toList())
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "no products with custom filter"));
+//        var predicate = QPredicates.builder()
+//                .add(filter.productMark(), product.productMark::containsIgnoreCase)
+//                .add(filter.productModel(), product.productModel::containsIgnoreCase)
+//                .add(filter.price(), product.price::eq)
+//                .build();
+//        return Optional.of(repository.findAll(predicate,pageable).stream().map(read::map).toList())
+//                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "no products with custom filter"));
+        return repository.findAll().stream().map(read::map).toList();
     }
 
     @Override
