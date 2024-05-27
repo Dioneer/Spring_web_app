@@ -20,7 +20,7 @@ import java.util.List;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("v3/users")
+@RequestMapping("/v3/users")
 public class ClientController {
 
     private final ClientService clientService;
@@ -55,7 +55,8 @@ public class ClientController {
             redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
             return "redirect:/v3/users/{id}";
         }
-        return "user";
+        ReadUserDTO read = clientService.update(update, id);
+        return "redirect:/v3/users/"+read.getId();
     }
 
     @PostMapping("/create")
@@ -82,7 +83,7 @@ public class ClientController {
         if(!clientService.deleteUser(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return "redirect:/v3/users/{id}";
+        return "404";
     }
 
 }

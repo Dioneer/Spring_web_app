@@ -23,6 +23,13 @@ public class PaymentController {
         return "payment";
     }
 
+    @GetMapping("/{id}")
+    public String findByUserId(Model model, @PathVariable Long id){
+        model.addAttribute("payments", paymentApi.findById(id));
+        return "payment";
+    }
+
+
     @PostMapping("/cart")
     public String findByCartNumber(@RequestBody @Validated UserCartDto userCartDto,
                                    BindingResult bindingResult, RedirectAttributes redirectAttributes){
@@ -32,7 +39,7 @@ public class PaymentController {
             return "redirect:/v3/payment";
         }
         paymentApi.cart(userCartDto);
-        return "payment";
+        return "redirect:/v3/payment";
     }
 
     @PostMapping("/pay")

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import pegas.ApplicationRunner;
 import pegas.dto.userdto.CreateUpdateUserDTO;
 import pegas.dto.userdto.ReadUserDTO;
@@ -18,6 +19,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @SpringBootTest(classes = ApplicationRunner.class)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@Transactional
 public class ClientServiceIT {
     private static final Long USER_ID=1L;
     @Autowired
@@ -44,7 +46,7 @@ public class ClientServiceIT {
     void update(){
         CreateUpdateUserDTO createDTO = new CreateUpdateUserDTO("reat@mail.ru", LocalDate.of(1998, 02, 25),
                 "Ivan", "Chesnokov", Role.valueOf("SILVER"));
-        ReadUserDTO readUser = clientService.update(createDTO, 5L);
+        ReadUserDTO readUser = clientService.update(createDTO, 1L);
         assertEquals(createDTO.getUsername(), readUser.getUsername());
         assertEquals(createDTO.getBirthdayDate(), readUser.getBirthdayDate());
         assertEquals(createDTO.getFirstname(), readUser.getFirstname());

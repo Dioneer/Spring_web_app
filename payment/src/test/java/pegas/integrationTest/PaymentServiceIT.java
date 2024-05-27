@@ -7,6 +7,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestConstructor;
+import org.springframework.transaction.annotation.Transactional;
 import pegas.ApplicationRunner2;
 import pegas.dto.Transfer;
 import pegas.dto.UserDataFind;
@@ -24,6 +25,7 @@ import static org.junit.jupiter.api.Assertions.*;
 @ActiveProfiles("test")
 @SpringBootTest(classes = ApplicationRunner2.class)
 @TestConstructor(autowireMode = TestConstructor.AutowireMode.ALL)
+@Transactional
 public class PaymentServiceIT {
     private static final Long PAYMENT_ID=1L;
     private static final Long CART_ID=11111L;
@@ -62,6 +64,6 @@ public class PaymentServiceIT {
         String result = paymentService.transaction(transfer);
         assertTrue(result.equals("the payment was completed successfully"));
         var expectResult = paymentService.findAll();
-        assertThat(expectResult).hasSize(4);
+        assertThat(expectResult).hasSize(3);
     }
 }
