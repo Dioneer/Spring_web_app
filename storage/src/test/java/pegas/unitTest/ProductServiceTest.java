@@ -12,9 +12,9 @@ import pegas.dto.ReadProductDTO;
 import pegas.repository.ProductRepository;
 import pegas.service.ProductService;
 
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
 

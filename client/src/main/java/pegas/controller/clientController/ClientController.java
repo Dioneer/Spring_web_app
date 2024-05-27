@@ -37,7 +37,7 @@ public class ClientController {
 
     @PostMapping("/login")
     public String authorisation(Model model, @ModelAttribute("login") LoginDTO loginDTO){
-        return "redirect:/login";
+        return "redirect:/v3/storage";
     }
 
     @GetMapping("/{id}")
@@ -47,7 +47,7 @@ public class ClientController {
         return "user";
     }
 
-    @PostMapping("/update")
+    @PostMapping("/{id}/update")
     public String updateUser(@ModelAttribute("user") @Validated CreateUpdateUserDTO update, @PathVariable("id") Long id,
     BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
@@ -74,10 +74,10 @@ public class ClientController {
     public String registration(Model model, @ModelAttribute("user") CreateUpdateUserDTO create){
         model.addAttribute("user", create);
         model.addAttribute("roles", Role.values());
-        return "registration";
+        return "index";
     }
 
-    @PostMapping("/delete")
+    @PostMapping("/{id}/delete")
     public String deleteUser(@PathVariable("id") Long id){
         if(!clientService.deleteUser(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);

@@ -1,5 +1,5 @@
 package pegas.entity;
 
 public enum Role {
-    ADMIN, USER
+    SILVER, GOLD,BRILLIANT
 }

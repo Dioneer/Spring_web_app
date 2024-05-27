@@ -19,7 +19,7 @@ public class PaymentController {
 
     @GetMapping
     public String payment(Model model){
-        model.addAttribute("products", paymentApi.allPayments());
+        model.addAttribute("payments", paymentApi.allPayments());
         return "payment";
     }
 
@@ -27,19 +27,19 @@ public class PaymentController {
     public String findByCartNumber(@RequestBody @Validated UserCartDto userCartDto,
                                    BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("user", userCartDto);
+            redirectAttributes.addFlashAttribute("cart", userCartDto);
             redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
-            return "redirect:/v3/storage";
+            return "redirect:/v3/payment";
         }
         paymentApi.cart(userCartDto);
-        return "redirect:/v3/storage";
+        return "payment";
     }
 
     @PostMapping("/pay")
     public String pay(@RequestBody @Validated TransferDTO transferDTO,
                       BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("user", transferDTO);
+            redirectAttributes.addFlashAttribute("transfer", transferDTO);
             redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
             return "redirect:/v3/storage";
         }
