@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pegas.dto.CreateEditProductDTO;
 import pegas.dto.OrderDTO;
 import pegas.dto.ProductFilter;
 import pegas.dto.ReadProductDTO;

@@ -2,8 +2,8 @@ package pegas.service.storageService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import pegas.aspect.TrackUserAction;
@@ -13,9 +13,8 @@ import pegas.dto.storage.ReadProductDTO;
 import pegas.service.exceptions.RequestErrorException;
 import pegas.service.exceptions.ServerErrorException;
 
-import javax.sql.rowset.serial.SerialException;
-
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.util.MimeTypeUtils.APPLICATION_OCTET_STREAM_VALUE;
 
 @Service
 @RequiredArgsConstructor
@@ -38,6 +37,20 @@ public class StorageApi {
                         (req, res) -> {
                     throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO[].class);
+    }
+
+    public byte[] findImage(Long id){
+        return restClient.get()
+                .uri(storageApi+"/"+id+"/avatar")
+                .accept(MediaType.valueOf(APPLICATION_OCTET_STREAM_VALUE))
+                .retrieve()
+                .onStatus(HttpStatusCode::is4xxClientError,
+                        (req, res) -> {
+                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                .onStatus(HttpStatusCode::is5xxServerError,
+                        (req, res) -> {
+                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                .body(byte[].class);
     }
 
     public ReadProductDTO[] getAllByFilter(ProductFilter productFilter){
