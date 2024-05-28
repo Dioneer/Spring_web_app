@@ -52,7 +52,7 @@ public class ClientController {
     BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("user", update);
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/users/{id}";
         }
         ReadUserDTO read = clientService.update(update, id);
@@ -64,18 +64,18 @@ public class ClientController {
                              BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("user", create);
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/users";
         }
         ReadUserDTO read = clientService.create(create);
-        return "redirect:/v3/users/"+read.getId();
+        return "redirect:/v3/storage";
     }
 
     @GetMapping("/registration")
     public String registration(Model model, @ModelAttribute("user") CreateUpdateUserDTO create){
         model.addAttribute("user", create);
         model.addAttribute("roles", Role.values());
-        return "index";
+        return "registration";
     }
 
     @PostMapping("/{id}/delete")
@@ -83,7 +83,7 @@ public class ClientController {
         if(!clientService.deleteUser(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
-        return "404";
+        return "redirect:/v3/users";
     }
 
 }

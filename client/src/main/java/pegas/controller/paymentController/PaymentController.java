@@ -35,7 +35,7 @@ public class PaymentController {
                                    BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("cart", userCartDto);
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/payment";
         }
         paymentApi.cart(userCartDto);
@@ -47,7 +47,7 @@ public class PaymentController {
                       BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("transfer", transferDTO);
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/storage";
         }
         paymentApi.pay(transferDTO);

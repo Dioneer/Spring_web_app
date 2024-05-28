@@ -5,7 +5,8 @@ create table if not exists users(
     firstname varchar(64) not null,
     lastname varchar(64),
     role varchar(32) not null,
-    password varchar(128) default '{noop}123'
+    password varchar(128) default '{noop}123',
+    user_image varchar(255)
 );
 --drop table users;
 

@@ -18,4 +18,5 @@ public class ReadUserDTO {
     String firstname;
     String lastname;
     Role role;
+    String image;
 }

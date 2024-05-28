@@ -1,11 +1,15 @@
 package pegas.service.clientService;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import pegas.dto.userdto.CreateUpdateUserDTO;
 import pegas.dto.userdto.ReadUserDTO;
+import pegas.entity.User;
 import pegas.mapper.CreateUpdateUserMapper;
 import pegas.mapper.ReadUserMapper;
 import pegas.repository.UserRepository;
@@ -18,6 +22,7 @@ public class ClientService implements CRUDService{
    private final CreateUpdateUserMapper createUpdate;
    private final ReadUserMapper readUserMapper;
    private final UserRepository repository;
+    private final ImageClientService imageClientService;
 
 
     @Override
@@ -36,13 +41,30 @@ public class ClientService implements CRUDService{
 
     @Override
     public ReadUserDTO create(CreateUpdateUserDTO create) {
-        return Optional.of(create).map(createUpdate::map).map(repository::save).map(readUserMapper::map)
+        return Optional.of(create).map(i->{
+                uploadImage(i.getMultipartFile());
+                return createUpdate.map(i);
+                }).map(repository::save).map(readUserMapper::map)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not create"));
+    }
+
+    @SneakyThrows
+    private void uploadImage(MultipartFile multipartFile) {
+        if(!multipartFile.isEmpty()) {
+            imageClientService.upload(multipartFile.getOriginalFilename(), multipartFile.getInputStream());
+        }
+    }
+    public Optional<byte[]> findUserImage(Long id){
+        return repository.findById(id).map(User::getImage).filter(StringUtils::hasText)
+                .flatMap(imageClientService::get);
     }
 
     @Override
     public ReadUserDTO update(CreateUpdateUserDTO update, Long id) {
-        return repository.findById(id).map(i->createUpdate.map(update, i)).map(repository::save).map(readUserMapper::map)
+        return repository.findById(id).map(i-> {
+                    uploadImage(update.getMultipartFile());
+                    return createUpdate.map(update, i);
+                }).map(repository::save).map(readUserMapper::map)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not update"));
     }
 }

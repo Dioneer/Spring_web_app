@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Payment</title>
+</head>
+<body>
+<div th:insert="~{fragment::home}"></div>
+    <div>
+        <p th:text="|Id: ${products.id}|">Product</p>
+        <p th:text="|Mark: ${products.productMark}|">Product</p>
+        <p th:text="|Model: ${products.productModel}|">Product</p>
+        <p th:text="|Price: ${products.price}|">Price</p>
+        <p th:text="|Amount: ${products.amount}|">Amount</p>
+        <p th:text="|Reserved: ${products.reserved}|">Reserved</p>
+        <form th:action="@{/v3/storage/{id}/reservation(id=${products.id})}" method="post">
+            <label for="reserved">reservation:
+                <input id="reserved" type="text" name="amount" th:value="0">
+                <button type="submit">Reserved</button>
+            </label><br>
+        </form>
+        <div th:if="${products.productImage}">
+                <img th:src="@{/v3/image/{id}/findImage(id=${products.id})}" width="300">
+        </div>
+        <form th:action="@{/v3/storage}" method="get">
+            <button type="submit">Back</button>
+        </form>
+    </div>
+</body>
+<div th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+</div>
+</html>

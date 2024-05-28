@@ -106,7 +106,7 @@ public class ProductService implements CRUDService{
     public ReadProductDTO reservation(@PathVariable Long id, Integer amount){
         return repository.findById(id).filter(i-> i.getAmount()>= amount).map(i->{
                 i.setAmount(i.getAmount()-amount);
-                i.setReserved(amount);
+                i.setReserved(amount+i.getReserved());
             return repository.save(i);}).map(read::map)
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "not enough amount"));
     }

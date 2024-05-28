@@ -20,6 +20,7 @@ import java.util.Optional;
 @RequestMapping("/v3/storage")
 public class StorageController {
     private final StorageApi storageApi;
+    private final static Long HOME = 1l;
 
     @GetMapping
     public String findAllProducts(Model model){
@@ -38,7 +39,7 @@ public class StorageController {
     public String findProductsById(Model model, @PathVariable("id") Long id){
         return Optional.of(storageApi.getById(id)).map(i->{
         model.addAttribute("products", storageApi.getById(id));
-        return "index";
+        return "product";
         }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
@@ -46,7 +47,7 @@ public class StorageController {
     public String reservation(Model model, @PathVariable("id") Long id, @ModelAttribute @Validated OrderDTO orderDTO,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/storage";
         }
         storageApi.reservation(orderDTO, id);
@@ -57,7 +58,7 @@ public class StorageController {
     public String unReservation(Model model, @PathVariable("id") Long id, @ModelAttribute @Validated OrderDTO orderDTO,
                                 BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/storage";
         }
         storageApi.unReservation(orderDTO, id);
@@ -67,7 +68,7 @@ public class StorageController {
     public String productSale(Model model, @PathVariable("id") Long id, @ModelAttribute @Validated OrderDTO orderDTO,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()) {
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/storage";
         }
         storageApi.sale(orderDTO, id);

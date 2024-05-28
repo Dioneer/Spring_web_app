@@ -6,13 +6,13 @@
     <title>User</title>
 </head>
 <body>
-<div th:insert="~{fragment::header}"></div>
-<form th:action="@{/users/{userId}/update(userId=${user.id})}" enctype="multipart/form-data" method="post" th:object="${user}">
+<!--<div th:insert="~{fragment::header}"></div>-->
+<form th:action="@{/v3/users/{userId}/update(userId=${user.id})}" enctype="multipart/form-data" method="post" th:object="${user}">
     <label for="username">Username:
         <input id="username" type="text" name="username" th:value="*{username}">
     </label><br>
     <label for="birthday">Birthday:
-        <input id="birthday" type="date" name="birthday" th:value="*{birthday}">
+        <input id="birthday" type="date" name="birthday" th:value="*{birthdayDate}">
     </label><br>
     <label for="lastname">Lastname:
         <input id="lastname" type="text" name="lastname" th:value="*{lastname}">
@@ -21,7 +21,7 @@
         <input id="firstname" type="text" name="firstname" th:value="*{firstname}">
     </label><br>
     <div th:if="${user.image}">
-        <img th:src="@{/api/v1/users/{userId}/avatar(userId=${user.id})}" alt="User image">
+        <img th:src="@{/v3/image/{id}/userImage(userId=${user.id})}" alt="User image">
     </div>
     <label for="image">Image:
         <input id="image" type="file" name="image">
@@ -30,19 +30,9 @@
         <input th:id="${role}" type="radio" name="role" th:value="${role}" th:checked="${role == user.role}">
         <label th:for="${role}" th:text="${role}">Role name</label>
     </div>
-    <div>
-        <label for="company"> Company:
-            <select id="company" name="companyId">
-                <option th:each="company : ${companies}"
-                        th:value="${company.getId()}"
-                        th:selected="${company == user.company}"
-                        th:text="${company.getCompanyName()}">Company</option>
-            </select>
-        </label>
-    </div>
     <button type="submit">Update</button>
 </form>
-<form th:action="@{/users/{userId}/delete(userId=${user.id})}" th:if="${user.role.name()=='ADMIN'}" method="post" th:object="${user}">
+<form th:action="@{/v3/users/{userId}/delete(userId=${user.id})}" method="post">
     <button type="submit">Remove</button>
 </form>
 <div th:if="${errors}">

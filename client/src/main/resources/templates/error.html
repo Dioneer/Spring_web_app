@@ -1,10 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <title>Error</title>
 </head>
 <body>
-
+    <div>
+        <p th:text="|ERROR: ${error}|">ERROR</p>
+        <p th:text="|TRACE: ${trace}|">TRACE</p>
+    </div>
 </body>
 </html>

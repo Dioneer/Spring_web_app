@@ -6,16 +6,43 @@
     <title>Users</title>
 </head>
 <body>
+<form th:action="@{/v3/storage/filter}">
+    <label for="productMark">Mark:
+        <input id="productMark" type="text" name="productMark">
+    </label><br>
+    <label for="productModel">Model:
+        <input id="productModel" type="text" name="productModel">
+    </label><br>
+    <label for="price">Price:
+        <input id="price" type="date" name="price">
+    </label><br>
+    <button type="submit">Filter</button>
+</form>
+<div th:insert="~{fragment::home}"></div>
 <div th:each="product : ${products}">
-    <a th:href="@{'/product/' + ${product.id}}" th:text="|${product.id}|">Product</a>
-    <p th:text="|${product.productMark}|">Product</p>
-    <a th:href="@{'/product/' + ${product.id}}" th:text="|${product.productModel}|">Product</a>
-    <p th:text="|${product.price}|">Product</p>
-    <p th:text="|${product.amount}|">Product</p>
-    <p th:text="|${product.reserved}|">Product</p>
+    <a th:href="@{'/v3/storage/' + ${product.id}}" th:text="|Id: ${product.id}|">Product</a>
+    <p th:text="|Mark: ${product.productMark}|">Product</p>
+    <a th:href="@{'/v3/storage/' + ${product.id}}" th:text="|Model: ${product.productModel}|">Product</a>
+    <p th:text="|Price: ${product.price}|">Price</p>
+    <p th:text="|Amount: ${product.amount}|">Amount</p>
+    <p th:text="|Reserved: ${product.reserved}|">Reserved</p>
+    <form th:action="@{/v3/storage/{id}/reservation(id=${product.id})}" method="post">
+        <label for="reserved">reservation:
+            <input id="reserved" type="text" name="amount" th:value="0">
+            <button type="submit">Reserved</button>
+        </label><br>
+    </form>
     <div th:if="${product.productImage}">
-        <img th:src="@{/v4/storage/{id}/findImage(id=${product.id})}" width="300" th:text="|${product.productImage}|">
+        <a th:href="@{'/v3/storage/' + ${product.id}}">
+            <img th:src="@{/v3/image/{id}/findImage(id=${product.id})}" width="300">
+        </a>
     </div>
+    <form th:action="@{/v3/storage/{id}/sale(id=${product.id})}" method="post">
+            <button type="submit">Buy</button>
+    </form>
+</div>
+<div th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
 </div>
 </body>
 </html>

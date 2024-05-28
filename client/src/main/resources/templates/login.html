@@ -9,7 +9,7 @@
 <div style="color: red" th:if="${param.error}">
     Invalid username and password.
 </div>
-<form th:action="@{/login}" method="post">
+<form th:action="@{/v3/users/login}" method="post">
     <label for="username">Username:</span>
         <input id="username" type="text" name="username">
     </label><br>
@@ -18,7 +18,7 @@
     </label><br>
     <button type="submit">Login</button>
 </form>
-<form action="v3/users/registration" method="get">
+<form th:action="@{/v3/users/registration}" method="get">
     <button type="submit">Registration</button>
 </form>
 </body>

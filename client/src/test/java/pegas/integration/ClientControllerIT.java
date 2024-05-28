@@ -31,7 +31,7 @@ public class ClientControllerIT {
                 .andExpect(model().attributeExists("user"));
     }
     @Test
-    void strat() throws Exception {
+    void start() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.get("/v3/users"))
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(view().name("login"));
@@ -71,6 +71,6 @@ public class ClientControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON))
                 .andExpect(status().is2xxSuccessful())
-                .andExpect(view().name("404"));
+                .andExpect(view().name("error"));
     }
 }

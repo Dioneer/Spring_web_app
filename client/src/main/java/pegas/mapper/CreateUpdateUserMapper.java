@@ -1,21 +1,27 @@
 package pegas.mapper;
 
 import org.springframework.stereotype.Component;
+import org.springframework.web.multipart.MultipartFile;
 import pegas.dto.userdto.CreateUpdateUserDTO;
 import pegas.entity.User;
+
+import java.util.Optional;
+import java.util.function.Predicate;
 
 @Component
 public class CreateUpdateUserMapper implements Mapper<CreateUpdateUserDTO, User>{
 
     @Override
     public User map(CreateUpdateUserDTO create) {
-        return User.builder()
-                .username(create.getUsername())
-                .firstname(create.getFirstname())
-                .lastname(create.getLastname())
-                .birthdayDate(create.getBirthdayDate())
-                .role(create.getRole())
-                .build();
+        User user = new User();
+        user.setUsername(create.getUsername());
+        user.setFirstname(create.getFirstname());
+        user.setLastname(create.getLastname());
+        user.setBirthdayDate(create.getBirthdayDate());
+        user.setRole(create.getRole());
+        Optional.ofNullable(create.getMultipartFile()).filter(Predicate.not(MultipartFile::isEmpty))
+                .ifPresent(i->user.setImage(i.getOriginalFilename()));
+        return user;
     }
 
     @Override
@@ -25,6 +31,8 @@ public class CreateUpdateUserMapper implements Mapper<CreateUpdateUserDTO, User>
         user.setLastname(update.getLastname());
         user.setBirthdayDate(update.getBirthdayDate());
         user.setRole(update.getRole());
+        Optional.ofNullable(update.getMultipartFile()).filter(Predicate.not(MultipartFile::isEmpty))
+                .ifPresent(i->user.setImage(i.getOriginalFilename()));
         return user;
     }
 }
