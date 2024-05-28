@@ -1,6 +1,5 @@
 package pegas.controller.clientController;
 
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -27,16 +26,4 @@ public class ClientRestController {
     public byte[] findUserImage(Model model, @PathVariable("id") Long id){
         return clientService.findUserImage(id).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
-
-//    @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public UserReadDTO create(@Valid @RequestBody UserCreateEditDto user){
-//        return userService.create(user);
-//    }
-//
-//    @PutMapping("/{id}")
-//    public UserReadDTO update(@PathVariable("id") Long id, @Valid @RequestBody UserCreateEditDto user){
-//        return userService.update(id, user)
-//                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
-//    }
 }

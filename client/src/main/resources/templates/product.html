@@ -19,6 +19,12 @@
                 <button type="submit">Reserved</button>
             </label><br>
         </form>
+        <form th:action="@{/v3/storage/{id}/sale(id=${products.id})}" method="post">
+            <label for="buy">Buy:
+                <input id="buy" type="text" name="amount" th:value="0">
+                <button type="submit">Buy</button>
+            </label><br>
+        </form>
         <div th:if="${products.productImage}">
                 <img th:src="@{/v3/image/{id}/findImage(id=${products.id})}" width="300">
         </div>

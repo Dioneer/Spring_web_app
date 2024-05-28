@@ -1,15 +1,21 @@
 package pegas.integration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import pegas.ApplicationRunner;
+import pegas.dto.payment.TransferDTO;
+import pegas.dto.payment.UserCartDto;
+
+import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -21,6 +27,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class PaymentControllerIT {
     @Autowired
     private MockMvc mockMvc;
+    @Autowired
+    private ObjectMapper mapper;
 
     @Test
     void findAll() throws Exception {
@@ -40,15 +48,21 @@ public class PaymentControllerIT {
 
     @Test
     void findByCart() throws Exception {
+        UserCartDto userCartDto = new UserCartDto();
+        userCartDto.setCartNumber(11111L);
+        String obj = mapper.writeValueAsString(userCartDto);
         mockMvc.perform(MockMvcRequestBuilders.post("/v3/payment/cart")
-                        .param("cartNumber", "11111"))
-                .andExpectAll(status().is4xxClientError());
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(obj))
+                .andExpectAll(status().is3xxRedirection());
     }
     @Test
     void payment() throws Exception {
+        TransferDTO transferDTO = new TransferDTO(11111L, new BigDecimal(2000));
+        String obj = mapper.writeValueAsString(transferDTO);
         mockMvc.perform(MockMvcRequestBuilders.post("/v3/payment/pay")
-                        .param("cartNumber", "11111")
-                        .param("sum", "2000"))
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(obj))
                 .andExpectAll(status().is4xxClientError());
     }
 }

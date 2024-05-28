@@ -65,11 +65,10 @@ public class ClientController {
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("user", create);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/v3/users";
+            return "redirect:/v3/users/registration";
         }
-        System.out.println("++++++++++++++++"+create);
         ReadUserDTO read = clientService.create(create);
-        return "redirect:/v3/storage";
+        return "redirect:/v3/storage?id="+read.getId();
     }
 
     @GetMapping("/registration")
@@ -86,5 +85,7 @@ public class ClientController {
         }
         return "redirect:/v3/users";
     }
+
+
 
 }

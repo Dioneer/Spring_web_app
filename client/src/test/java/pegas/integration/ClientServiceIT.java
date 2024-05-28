@@ -39,8 +39,14 @@ public class ClientServiceIT {
     void create() throws IOException {
         FileInputStream fis = new FileInputStream("images/san1.jpg");
         MockMultipartFile multipartFile = new MockMultipartFile("file", fis);
-        CreateUpdateUserDTO createDTO = new CreateUpdateUserDTO("reat@mail.ru", LocalDate.of(1998, 02, 25),
-                "Ivan", "Pentrov", Role.valueOf("SILVER"),multipartFile);
+        CreateUpdateUserDTO createDTO = CreateUpdateUserDTO.builder()
+                .username("Ivaaan@mail.ru")
+                .firstname("Ivan")
+                .lastname("Petrov")
+                .birthdayDate(LocalDate.of(1990,02,15))
+                .role(Role.valueOf("SILVER"))
+                .multipartFile(multipartFile)
+                .build();
         ReadUserDTO readUser = clientService.create(createDTO);
         assertEquals(createDTO.getUsername(), readUser.getUsername());
         assertEquals(createDTO.getBirthdayDate(), readUser.getBirthdayDate());
@@ -53,8 +59,14 @@ public class ClientServiceIT {
     void update() throws IOException {
         FileInputStream fis = new FileInputStream("images/san1.jpg");
         MockMultipartFile multipartFile = new MockMultipartFile("file", fis);
-        CreateUpdateUserDTO createDTO = new CreateUpdateUserDTO("reat@mail.ru", LocalDate.of(1998, 02, 25),
-                "Ivan", "Chesnokov", Role.valueOf("SILVER"), multipartFile);
+        CreateUpdateUserDTO createDTO = CreateUpdateUserDTO.builder()
+                .username("Ivaaan@mail.ru")
+                .firstname("Ivan")
+                .lastname("Petrov")
+                .birthdayDate(LocalDate.of(1990,02,15))
+                .role(Role.valueOf("SILVER"))
+                .multipartFile(multipartFile)
+                .build();
         ReadUserDTO readUser = clientService.update(createDTO, 1L);
         assertEquals(createDTO.getUsername(), readUser.getUsername());
         assertEquals(createDTO.getBirthdayDate(), readUser.getBirthdayDate());

@@ -47,23 +47,31 @@ public class ClientControllerIT {
     }
     @Test
     void update() throws Exception {
-        CreateUpdateUserDTO update = new CreateUpdateUserDTO("Ivan@mail.ru",
-                LocalDate.of(1990,02,15),"Ivan", "Petrov",
-                Role.valueOf("SILVER"), null);
-        String object = mapper.writeValueAsString(update);
+        String object = mapper.writeValueAsString(CreateUpdateUserDTO.builder()
+                .username("Ivaaan@mail.ru")
+                .firstname("Ivan")
+                .lastname("Petrov")
+                .birthdayDate(LocalDate.of(1990,02,15))
+                .role(Role.valueOf("SILVER"))
+                .multipartFile(null)
+                .build());
         mockMvc.perform(MockMvcRequestBuilders.post("/v3/users/{id}/update", 2L)
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
                         .content(object))
-                .andExpect(status().is3xxRedirection());
+                .andExpect(status().is4xxClientError());
     }
     @Test
     void create() throws Exception {
-        CreateUpdateUserDTO update = new CreateUpdateUserDTO("Ivaaan@mail.ru",
-                LocalDate.of(1990,02,15),"Ivan", "Petrov",
-                Role.valueOf("SILVER"), null);
-        String object = mapper.writeValueAsString(update);
+        String object = mapper.writeValueAsString(CreateUpdateUserDTO.builder()
+                .username("Ivaaan@mail.ru")
+                .firstname("Ivan")
+                .lastname("Petrov")
+                .birthdayDate(LocalDate.of(1990,02,15))
+                .role(Role.valueOf("SILVER"))
+                .multipartFile(null)
+                .build());
         mockMvc.perform(MockMvcRequestBuilders.post("/v3/users/create")
-                        .contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.MULTIPART_FORM_DATA)
                         .content(object))
                 .andExpect(status().is3xxRedirection());
     }

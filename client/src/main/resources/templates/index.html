@@ -27,7 +27,7 @@
     <p th:text="|Amount: ${product.amount}|">Amount</p>
     <p th:text="|Reserved: ${product.reserved}|">Reserved</p>
     <form th:action="@{/v3/storage/{id}/reservation(id=${product.id})}" method="post">
-        <label for="reserved">reservation:
+        <label for="reserved">Reservation:
             <input id="reserved" type="text" name="amount" th:value="0">
             <button type="submit">Reserved</button>
         </label><br>
@@ -38,7 +38,10 @@
         </a>
     </div>
     <form th:action="@{/v3/storage/{id}/sale(id=${product.id})}" method="post">
+        <label for="buy">Buy:
+            <input id="buy" type="text" name="amount" th:value="0">
             <button type="submit">Buy</button>
+        </label><br>
     </form>
 </div>
 <div th:if="${errors}">
