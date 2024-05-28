@@ -57,7 +57,7 @@ public class ClientProductController {
     @GetMapping(value = "/{id}/avatar", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
     public ResponseEntity<byte[]> findAvatar(@PathVariable("id") Long id){
         return ResponseEntity.ok().body(productService.findAvatar(id)
-                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "avatar was not found")));
+                .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "image was not found")));
 
     }
 

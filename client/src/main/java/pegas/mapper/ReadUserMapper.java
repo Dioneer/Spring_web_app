@@ -11,6 +11,6 @@ public class ReadUserMapper implements Mapper<User, ReadUserDTO>{
     @Override
     public ReadUserDTO map(User user) {
         return new ReadUserDTO(user.getId(), user.getUsername(), user.getBirthdayDate(),
-                user.getFirstname(), user.getLastname(), user.getRole());
+                user.getFirstname(), user.getLastname(), user.getRole(), user.getImage());
     }
 }

@@ -3,6 +3,7 @@ package pegas.integration;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestConstructor;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,6 +13,9 @@ import pegas.dto.userdto.ReadUserDTO;
 import pegas.entity.Role;
 import pegas.service.clientService.ClientService;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -32,20 +36,25 @@ public class ClientServiceIT {
 
     }
     @Test
-    void create(){
+    void create() throws IOException {
+        FileInputStream fis = new FileInputStream("images/san1.jpg");
+        MockMultipartFile multipartFile = new MockMultipartFile("file", fis);
         CreateUpdateUserDTO createDTO = new CreateUpdateUserDTO("reat@mail.ru", LocalDate.of(1998, 02, 25),
-                "Ivan", "Pentrov", Role.valueOf("SILVER"));
+                "Ivan", "Pentrov", Role.valueOf("SILVER"),multipartFile);
         ReadUserDTO readUser = clientService.create(createDTO);
         assertEquals(createDTO.getUsername(), readUser.getUsername());
         assertEquals(createDTO.getBirthdayDate(), readUser.getBirthdayDate());
         assertEquals(createDTO.getFirstname(), readUser.getFirstname());
         assertEquals(createDTO.getLastname(), readUser.getLastname());
         assertSame(createDTO.getRole(), readUser.getRole());
+        assertEquals(createDTO.getMultipartFile().getOriginalFilename(), createDTO.getMultipartFile().getOriginalFilename());
     }
     @Test
-    void update(){
+    void update() throws IOException {
+        FileInputStream fis = new FileInputStream("images/san1.jpg");
+        MockMultipartFile multipartFile = new MockMultipartFile("file", fis);
         CreateUpdateUserDTO createDTO = new CreateUpdateUserDTO("reat@mail.ru", LocalDate.of(1998, 02, 25),
-                "Ivan", "Chesnokov", Role.valueOf("SILVER"));
+                "Ivan", "Chesnokov", Role.valueOf("SILVER"), multipartFile);
         ReadUserDTO readUser = clientService.update(createDTO, 1L);
         assertEquals(createDTO.getUsername(), readUser.getUsername());
         assertEquals(createDTO.getBirthdayDate(), readUser.getBirthdayDate());

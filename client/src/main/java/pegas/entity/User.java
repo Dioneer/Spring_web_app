@@ -26,5 +26,6 @@ public class User {
     @Column(nullable = false)
     private Role role;
     private String password;
+    @Column(name = "user_image")
     private String image;
 }

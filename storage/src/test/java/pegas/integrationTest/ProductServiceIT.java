@@ -64,7 +64,7 @@ public class ProductServiceIT {
         assertEquals(createDTO.getProductModel(), productDTO.getProductModel());
         assertEquals(createDTO.getPrice(), productDTO.getPrice());
         assertEquals(createDTO.getAmount(), productDTO.getAmount());
-        assertEquals(createDTO.getReserved().byteValue(), productDTO.getReserved().byteValue());
+        assertEquals(createDTO.getReserved(), productDTO.getReserved());
     }
     @Test
     void update() throws IOException {
@@ -77,7 +77,7 @@ public class ProductServiceIT {
         assertEquals(createDTO.getProductModel(), productDTO.getProductModel());
         assertEquals(createDTO.getPrice(), productDTO.getPrice());
         assertEquals(createDTO.getAmount(), productDTO.getAmount());
-        assertEquals(createDTO.getReserved().byteValue(), productDTO.getReserved().byteValue());
+        assertEquals(createDTO.getReserved(), productDTO.getReserved());
     }
     @Test
     void delete(){

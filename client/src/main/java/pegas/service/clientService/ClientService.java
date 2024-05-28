@@ -50,6 +50,7 @@ public class ClientService implements CRUDService{
 
     @SneakyThrows
     private void uploadImage(MultipartFile multipartFile) {
+        System.out.println("++++++++++++++++"+multipartFile);
         if(!multipartFile.isEmpty()) {
             imageClientService.upload(multipartFile.getOriginalFilename(), multipartFile.getInputStream());
         }

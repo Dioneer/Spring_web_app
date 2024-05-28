@@ -67,6 +67,7 @@ public class ClientController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/users";
         }
+        System.out.println("++++++++++++++++"+create);
         ReadUserDTO read = clientService.create(create);
         return "redirect:/v3/storage";
     }

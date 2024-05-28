@@ -21,7 +21,7 @@
         <input id="firstname" type="text" name="firstname" th:value="*{firstname}">
     </label><br>
     <div th:if="${user.image}">
-        <img th:src="@{/v3/image/{id}/userImage(userId=${user.id})}" alt="User image">
+        <img th:src="@{/v3/image/{id}/userImage(id=${user.id})}" alt="User image">
     </div>
     <label for="image">Image:
         <input id="image" type="file" name="image">
