@@ -9,6 +9,6 @@ public class ReadProductMapper implements Mapper<Product, ReadProductDTO>{
     @Override
     public ReadProductDTO map(Product from) {
         return new ReadProductDTO(from.getId(), from.getProductMark(), from.getProductModel(),
-                from.getPrice().toString(), from.getAmount(), from.getReserved(), from.getProductImage());
+                from.getPrice().toString(), from.getAmount(),from.getReserved(), from.getProductImage());
     }
 }

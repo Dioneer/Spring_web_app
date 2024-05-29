@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+</head>
+<body>
+<form th:action="@{/v1/create}" enctype="multipart/form-data" method="post" th:object="${product}">
+    <label for="Mark">Product:
+        <input id="Mark" type="text" name="productMark" th:value="*{productMark}">
+    </label><br>
+    <label for="Model">Model:
+        <input id="Model" type="text" name="productModel" th:value="*{productModel}">
+    </label><br>
+    <label for="pricepr">Price:
+        <input id="pricepr" type="text" name="price" th:value="*{price}">
+    </label><br>
+    <label for="product.amount">Amount:
+        <input id="product.amount" type="text" name="amount" th:value="*{amount}">
+    </label><br>
+    <label for="product.reserved">Reserved:
+        <input id="product.reserved" type="text" name="reserved" th:value="*{reserved}">
+    </label><br>
+    <label for="multipartFile">Image:
+        <input id="multipartFile" type="file" name="productImage">
+    </label><br>
+    <button type="submit">Create</button>
+</form>
+<div th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="${error}">Error message</p>
+</div>
+</body>
+</html>

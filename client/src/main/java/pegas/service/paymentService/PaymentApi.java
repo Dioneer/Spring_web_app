@@ -37,10 +37,12 @@ public class PaymentApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error! No payments was found:" +
+                                    " "+ res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error! Some problems with path for all payments: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .body(PaymentDTO[].class);
     }
 
@@ -51,10 +53,12 @@ public class PaymentApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error! Payment was not found: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error! Some problems with path for payment: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .body(PaymentDTO.class);
     }
 
@@ -67,10 +71,12 @@ public class PaymentApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error! Cart was not found:  "+
+                                    res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error! Some problems with path for cart: "+
+                                    res.getStatusCode() + res.getStatusText());})
                 .body(PaymentDTO.class);
     }
 
@@ -84,10 +90,12 @@ public class PaymentApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error! Cart was not found:  "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error! Some problems with path for cart: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .body(String.class);
     }
 

@@ -4,6 +4,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.multipart.MultipartFile;
 import pegas.dto.CreateEditProductDTO;
 import pegas.entity.Product;
+import pegas.entity.Role;
 
 import java.math.BigDecimal;
 import java.util.Optional;

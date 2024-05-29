@@ -95,33 +95,50 @@ public class ProductService implements CRUDService{
 
     @Transactional
     public ReadProductDTO reduceAmount(@PathVariable Long id, Integer amount){
-       return repository.findById(id).filter(i-> i.getAmount()>= amount).map(i->{
+       return repository.findById(id).filter(i-> {
+                   if(i.getAmount() >= amount){
+                       return true;
+                   }
+                   throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "we have only "+i.getAmount()+" items");
+               }).map(i->{
                 i.setAmount(i.getAmount()-amount);
                 return repository.save(i);})
                .map(read::map)
-               .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "not enough amount"));
+               .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "not found user with id " +
+                       id));
     }
 
     @Transactional
     public ReadProductDTO reservation(@PathVariable Long id, Integer amount){
-        return repository.findById(id).filter(i-> i.getAmount()>= amount).map(i->{
+        return repository.findById(id).filter(i-> {
+                    if(i.getAmount() >= amount){
+                        return true;
+                    }
+                    throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "we have only "+i.getAmount()+" items");
+                }).map(i->{
                 i.setAmount(i.getAmount()-amount);
                 i.setReserved(amount+i.getReserved());
             return repository.save(i);}).map(read::map)
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "not enough amount"));
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "not found user with id " +id));
     }
 
     @Transactional
     public ReadProductDTO deReservation(@PathVariable Long id, Integer amount){
-        return repository.findById(id).filter(i->i.getReserved()>= amount).map(i->{
+        return repository.findById(id).filter(i-> {
+            if(i.getReserved() >= amount){
+                return true;
+            }
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "we have only "+i.getAmount()+" items");
+        }).map(i->{
                 i.setAmount(i.getAmount()+amount);
                 i.setReserved(i.getReserved()-amount);
                 return repository.save(i);
-        }).map(read::map).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "not enough reserved"));
+        }).map(read::map).orElseThrow(()->new ResponseStatusException(HttpStatus.BAD_REQUEST, "not found user with id "
+                +id));
     }
 
     @SneakyThrows
-    public Optional<byte[]> findAvatar(Long id) {
+    public Optional<byte[]> findImage(Long id) {
         return repository.findById(id).map(Product::getProductImage).filter(StringUtils::hasText)
                 .flatMap(imageService::get);
     }

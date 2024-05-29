@@ -35,7 +35,8 @@ public class ClientProductController {
     @GetMapping("/{id}")
     public ResponseEntity<ReadProductDTO> findById(@PathVariable Long id){
         return productService.findById(id).map(i-> ResponseEntity.ok().body(i))
-                    .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not found"));
+                    .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "product was not found with id "
+                    +id));
     }
 
     @PostMapping("/{id}/sale")
@@ -54,9 +55,9 @@ public class ClientProductController {
         return ResponseEntity.ok().body(productService.deReservation(id, orderDTO.getAmount()));
     }
 
-    @GetMapping(value = "/{id}/avatar", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
-    public ResponseEntity<byte[]> findAvatar(@PathVariable("id") Long id){
-        return ResponseEntity.ok().body(productService.findAvatar(id)
+    @GetMapping(value = "/{id}/image", produces = MediaType.APPLICATION_OCTET_STREAM_VALUE)
+    public ResponseEntity<byte[]> findImage(@PathVariable("id") Long id){
+        return ResponseEntity.ok().body(productService.findImage(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "image was not found")));
 
     }

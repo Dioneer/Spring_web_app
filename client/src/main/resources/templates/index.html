@@ -6,7 +6,7 @@
     <title>Users</title>
 </head>
 <body>
-<form th:action="@{/v3/storage/filter}">
+<form th:action="@{/v3/storage/filter?id=${idUser}}">
     <label for="productMark">Mark:
         <input id="productMark" type="text" name="productMark">
     </label><br>
@@ -14,7 +14,7 @@
         <input id="productModel" type="text" name="productModel">
     </label><br>
     <label for="price">Price:
-        <input id="price" type="date" name="price">
+        <input id="price" type="text" name="price">
     </label><br>
     <button type="submit">Filter</button>
 </form>

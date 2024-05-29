@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User</title>
+</head>
+<body>
+<form th:action="@{/v1/filter}" method="post">
+    <label for="productMark">Mark:
+        <input id="productMark" type="text" name="productMark">
+    </label><br>
+    <label for="productModel">Model:
+        <input id="productModel" type="text" name="productModel">
+    </label><br>
+    <label for="price">Price:
+        <input id="price" type="text" name="price">
+    </label><br>
+    <button type="submit">Filter</button>
+</form>
+<form th:action="@{/v1/create}">
+    <button type="submit">Create</button>
+</form>
+<div th:each="product : ${products}">
+
+    <p th:text="|Amount: ${product.amount}|">Amount</p>
+    <p th:text="|Reserved: ${product.reserved}|">Reserved</p>
+    <div th:if="${product.productImage}">
+        <img th:src="@{/api/v1/{id}/image(id=${product.id})}" width="300">
+    </div>
+<form th:action="@{/v1/{id}/update(id=${product.id})}">
+    <button type="submit">Update</button>
+</form>
+<form th:action="@{/v1/{id}/update(id=${product.id})}">
+    <button type="submit">Remove</button>
+</form>
+</div>
+</body>
+</html>

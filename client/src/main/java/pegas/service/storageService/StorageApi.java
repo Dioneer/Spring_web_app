@@ -32,24 +32,28 @@ public class StorageApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                    throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                    throw new RequestErrorException("Error! Payments was not found: "
+                            + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                    throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                    throw new ServerErrorException("Error! Some problems with path for all payments: "
+                            + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO[].class);
     }
 
     public byte[] findImage(Long id){
         return restClient.get()
-                .uri(storageApi+"/"+id+"/avatar")
+                .uri(storageApi+"/"+id+"/image")
                 .accept(MediaType.valueOf(APPLICATION_OCTET_STREAM_VALUE))
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error! Image was not found: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error! Some problems with path for image: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .body(byte[].class);
     }
 
@@ -62,10 +66,12 @@ public class StorageApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error! Filtering priducts was not found: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error! Some problems with path for filter: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO[].class);
     }
 
@@ -76,10 +82,12 @@ public class StorageApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error!Product was not found by id: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error!Some problems with path for find product by id: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
     }
     @TrackUserAction
@@ -92,10 +100,12 @@ public class StorageApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error!Product was not found for reservation: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error!Some problems with path for or reservation: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
     }
     @TrackUserAction
@@ -108,10 +118,12 @@ public class StorageApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error!Product was not found for unreservation: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error!Some problems with path for or unreservation: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
     }
     @TrackUserAction
@@ -124,10 +136,12 @@ public class StorageApi {
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                            throw new RequestErrorException("Error 4xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new RequestErrorException("Error!Product was not found for sale: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
-                            throw new ServerErrorException("Error 5xx restClinet: "+ res.getStatusCode() + res.getStatusText());})
+                            throw new ServerErrorException("Error!Some problems with sale: "
+                                    + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
     }
 }

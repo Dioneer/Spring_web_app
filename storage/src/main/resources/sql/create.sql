@@ -7,6 +7,12 @@ create table if not exists products(
     reserved int default 0,
     product_image varchar(255)
 );
+create table if not exists admin_user(
+    id bigserial primary key,
+    role varchar(32) not null,
+    admin_login varchar(125) not null,
+    password varchar(128) default '{noop}123'
+);
 --drop table products;
 
 insert into products(product_mark, product_model, price, amount, product_image)
@@ -14,3 +20,6 @@ values('Материнская плата MSI PRO', 'H610M-E DDR4', 7990.00, 10,
 ('Материнская плата ASROCK H670M PRO', 'RS', 11140.00, 5, 'Screenshot_1.jpg'),
 ('Материнская плата MSI MPG', 'B550 GAMING PLUS', 14840.00, 12, 'Screenshot_6.jpg'),
 ('Материнская плата GIGABYTE', 'B760M DS3H DDR4', 12600.00, 8, 'Screenshot_7.jpg');
+
+insert into admin_user(role, admin_login) values ('ADMIN', 'petrov@mail.ru'),('ADMIN', 'ivanov@mail.ru'),
+('USER', 'sidorov@mail.ru'), ('USER', 'panin@mail.ru')

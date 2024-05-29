@@ -12,24 +12,21 @@ import pegas.service.exceptions.ServerErrorException;
 @ControllerAdvice
 public class AdviceController {
     @ExceptionHandler(RequestErrorException.class)
-    public String handlerException1(Model model, Exception exception, RequestErrorException e){
-        model.addAttribute("error", e);
-        model.addAttribute("trace", exception);
-        log.error(e.getMessage() + "not found", exception.getMessage());
+    public String handlerException1(Model model, RequestErrorException e){
+        model.addAttribute("errors", e);
+        log.error(e.getMessage() + "not found", e.fillInStackTrace());
         return "error";
     }
     @ExceptionHandler(ServerErrorException.class)
-    public String handlerException2(Model model, Exception exception, ServerErrorException e){
-        model.addAttribute("error", e);
-        model.addAttribute("trace", exception);
-        log.error(e.getMessage() + "failed request", exception.getMessage());
+    public String handlerException2(Model model, ServerErrorException e){
+        model.addAttribute("errors", e.getMessage());
+        log.error(e.getMessage() + "failed request",e.fillInStackTrace());
         return "error";
     }
     @ExceptionHandler(ResponseStatusException.class)
-    public String handlerException3(Model model, Exception exception, ResponseStatusException e){
-        model.addAttribute("error", e);
-        model.addAttribute("trace", exception);
-        log.error(e.getMessage() + "failed request", exception.getMessage());
+    public String handlerException3(Model model, ResponseStatusException e){
+        model.addAttribute("errors", e.getMessage());
+        log.error(e.getMessage() + "failed request", e.fillInStackTrace());
         return "error";
     }
 }

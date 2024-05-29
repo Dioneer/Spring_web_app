@@ -78,7 +78,6 @@ public class StorageController {
             return "redirect:/v3/storage?id="+userId;
         }
         storageApi.sale(orderDTO, id);
-        System.out.println("+++++++++++++++++++++++"+userId);
         return "redirect:/v3/storage?id="+userId;
     }
 

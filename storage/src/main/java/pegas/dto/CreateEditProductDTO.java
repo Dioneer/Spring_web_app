@@ -3,10 +3,10 @@ package pegas.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
-import lombok.Value;
+import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
-@Value
+@Data
 public class CreateEditProductDTO {
     @NotBlank
     @Size(min=3)
