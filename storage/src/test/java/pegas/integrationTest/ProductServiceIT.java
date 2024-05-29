@@ -57,8 +57,13 @@ public class ProductServiceIT {
     void create() throws IOException {
         FileInputStream fis = new FileInputStream("images/light_bulb_light_dark_226180_1200x1600.jpg");
         MockMultipartFile multipartFile = new MockMultipartFile("file", fis);
-        CreateEditProductDTO createDTO= new CreateEditProductDTO("Материнская плата Gerber",
-                "H610M-MMM", "17990.00", 18, 0, multipartFile);
+        CreateEditProductDTO createDTO= new CreateEditProductDTO();
+        createDTO.setProductMark("Материнская плата Gerber");
+        createDTO.setProductMark("H610M-MMM");
+        createDTO.setPrice("17990.00");
+        createDTO.setAmount(18);
+        createDTO.setReserved(0);
+        createDTO.setProductImage(multipartFile);
         ReadProductDTO productDTO = productService.create(createDTO);
         assertEquals(createDTO.getProductMark(), productDTO.getProductMark());
         assertEquals(createDTO.getProductModel(), productDTO.getProductModel());
@@ -70,8 +75,13 @@ public class ProductServiceIT {
     void update() throws IOException {
         FileInputStream fis = new FileInputStream("images/light_bulb_light_dark_226180_1200x1600.jpg");
         MockMultipartFile multipartFile = new MockMultipartFile("file", fis);
-        CreateEditProductDTO createDTO= new CreateEditProductDTO("Материнская плата MSI PRO",
-                "H610M-MMM", "17990.00", 16, 0, multipartFile);
+        CreateEditProductDTO createDTO= new CreateEditProductDTO();
+        createDTO.setProductMark("Материнская плата Gerber");
+        createDTO.setProductMark("H610M-MMM");
+        createDTO.setPrice("17990.00");
+        createDTO.setAmount(18);
+        createDTO.setReserved(0);
+        createDTO.setProductImage(multipartFile);
         ReadProductDTO productDTO = productService.update(createDTO, 1L);
         assertEquals(createDTO.getProductMark(), productDTO.getProductMark());
         assertEquals(createDTO.getProductModel(), productDTO.getProductModel());
@@ -104,8 +114,13 @@ public class ProductServiceIT {
         Integer reservation = 5;
         FileInputStream fis = new FileInputStream("images/light_bulb_light_dark_226180_1200x1600.jpg");
         MockMultipartFile multipartFile = new MockMultipartFile("file", fis);
-        CreateEditProductDTO createDTO= new CreateEditProductDTO("Материнская плата Gerber",
-                "H610M-MMM", "17990.00", 18, reservation, multipartFile);
+        CreateEditProductDTO createDTO= new CreateEditProductDTO();
+        createDTO.setProductMark("Материнская плата Gerber");
+        createDTO.setProductMark("H610M-MMM");
+        createDTO.setPrice("17990.00");
+        createDTO.setAmount(18);
+        createDTO.setReserved(0);
+        createDTO.setProductImage(multipartFile);
         ReadProductDTO productDTO1 = productService.create(createDTO);
         ReadProductDTO productDTO2 = productService.deReservation(productDTO1.getId(), reservation);
         assertSame(productDTO2.getAmount(), amount);
