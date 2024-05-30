@@ -17,6 +17,11 @@ import pegas.service.paymentService.PaymentApi;
 public class PaymentController {
     private final PaymentApi paymentApi;
 
+    /**
+     * this method for the development of the system is not currently used
+     * @param model
+     * @return view of html page
+     */
     @GetMapping
     public String payment(Model model){
         model.addAttribute("payments", paymentApi.allPayments());
@@ -29,28 +34,15 @@ public class PaymentController {
         return "payment";
     }
 
-
     @PostMapping("/cart")
-    public String findByCartNumber(@RequestBody @Validated UserCartDto userCartDto,
+    public String findByCartNumber(Model model, @ModelAttribute @Validated UserCartDto userCartDto,
                                    BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("cart", userCartDto);
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/v3/payment";
+            return "payment";
         }
-        paymentApi.cart(userCartDto);
-        return "redirect:/v3/payment";
+        model.addAttribute("payments", paymentApi.cart(userCartDto));
+        return "payment";
     }
 
-    @PostMapping("/pay")
-    public String pay(@RequestBody @Validated TransferDTO transferDTO,
-                      BindingResult bindingResult, RedirectAttributes redirectAttributes){
-        if(bindingResult.hasErrors()){
-            redirectAttributes.addFlashAttribute("transfer", transferDTO);
-            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
-            return "redirect:/v3/storage";
-        }
-        paymentApi.pay(transferDTO);
-        return "redirect:/v3/storage";
-    }
 }

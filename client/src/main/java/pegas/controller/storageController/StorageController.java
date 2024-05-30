@@ -10,10 +10,16 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import pegas.dto.payment.PaymentDTO;
+import pegas.dto.payment.TransferDTO;
 import pegas.dto.storage.OrderDTO;
 import pegas.dto.storage.ProductFilter;
+import pegas.dto.userdto.ReadUserDTO;
+import pegas.service.clientService.ClientService;
+import pegas.service.paymentService.PaymentApi;
 import pegas.service.storageService.StorageApi;
 
+import java.math.BigDecimal;
 import java.util.Optional;
 
 @Controller
@@ -22,7 +28,8 @@ import java.util.Optional;
 @SessionAttributes(value = {"userId"})
 public class StorageController {
     private final StorageApi storageApi;
-    private final static Long HOME = 1l;
+    private final ClientService clientService;
+    private final PaymentApi paymentApi;
 
     @GetMapping
     public String findAllProducts(Model model, @RequestParam("id") Long userId){
@@ -77,7 +84,16 @@ public class StorageController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/storage?id="+userId;
         }
-        storageApi.sale(orderDTO, id);
+        String price = storageApi.getById(id).getPrice();
+        Long number= paymentApi.findById(userId).getCartNumber();
+        BigDecimal sum = new BigDecimal(orderDTO.getAmount()).multiply(new BigDecimal(price));
+        TransferDTO transferDTO = new TransferDTO(number,sum);
+        String result = paymentApi.pay(transferDTO);
+        if(result==null) {
+            storageApi.sale(orderDTO, id);
+        }else{
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, result);
+        }
         return "redirect:/v3/storage?id="+userId;
     }
 

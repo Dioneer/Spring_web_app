@@ -1,11 +1,13 @@
 package pegas.service.storageService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.util.UriComponentsBuilder;
 import pegas.aspect.TrackUserAction;
 import pegas.dto.storage.OrderDTO;
 import pegas.dto.storage.ProductFilter;
@@ -20,19 +22,27 @@ import static org.springframework.util.MimeTypeUtils.APPLICATION_OCTET_STREAM_VA
 @RequiredArgsConstructor
 public class StorageApi {
 
-    @Value("${app.path.storage}")
-    private String storageApi;
+    private final DiscoveryClient discoveryClient;
 
     private final RestClient restClient;
 
+    private String serviceURL() {
+        ServiceInstance instance = discoveryClient.getInstances("appStorage")
+                .stream().findAny()
+                .orElseThrow(() -> new IllegalStateException("appStorage service unavailable"));
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
+                .fromHttpUrl(instance.getUri().toString() + "/api/v1");
+        return uriComponentsBuilder.toUriString();
+    }
+
     public ReadProductDTO[] getAll(){
         return restClient.get()
-                .uri(storageApi)
+                .uri(serviceURL())
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
-                    throw new RequestErrorException("Error! Payments was not found: "
+                    throw new RequestErrorException("Error! Products was not found: "
                             + res.getStatusCode() + res.getStatusText());})
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
@@ -43,7 +53,7 @@ public class StorageApi {
 
     public byte[] findImage(Long id){
         return restClient.get()
-                .uri(storageApi+"/"+id+"/image")
+                .uri(serviceURL()+"/"+id+"/image")
                 .accept(MediaType.valueOf(APPLICATION_OCTET_STREAM_VALUE))
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
@@ -59,7 +69,7 @@ public class StorageApi {
 
     public ReadProductDTO[] getAllByFilter(ProductFilter productFilter){
         return restClient.post()
-                .uri(storageApi+"/filter")
+                .uri(serviceURL() +"/filter")
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .body(productFilter)
@@ -77,7 +87,7 @@ public class StorageApi {
 
     public ReadProductDTO getById(Long id){
         return restClient.get()
-                .uri(storageApi+"/"+id)
+                .uri(serviceURL() +"/"+id)
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
@@ -93,7 +103,7 @@ public class StorageApi {
     @TrackUserAction
     public ReadProductDTO reservation(OrderDTO reservation, Long id){
         return restClient.post()
-                .uri(storageApi+"/"+id+"/reservation")
+                .uri(serviceURL() +"/"+id+"/reservation")
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .body(reservation)
@@ -111,7 +121,7 @@ public class StorageApi {
     @TrackUserAction
     public ReadProductDTO unReservation(OrderDTO reservation, Long id){
         return restClient.post()
-                .uri(storageApi+"/"+id+"/unreservation")
+                .uri(serviceURL() +"/"+id+"/unreservation")
                 .accept(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .body(reservation)
@@ -129,7 +139,7 @@ public class StorageApi {
     @TrackUserAction
     public ReadProductDTO sale(OrderDTO reservation, Long id){
         return restClient.post()
-                .uri(storageApi+"/"+id+"/sale")
+                .uri(serviceURL()+"/"+id+"/sale")
                 .accept(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .body(reservation)

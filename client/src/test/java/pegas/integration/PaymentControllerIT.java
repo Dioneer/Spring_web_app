@@ -12,10 +12,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.transaction.annotation.Transactional;
 import pegas.ApplicationRunner;
-import pegas.dto.payment.TransferDTO;
 import pegas.dto.payment.UserCartDto;
-
-import java.math.BigDecimal;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -55,14 +52,5 @@ public class PaymentControllerIT {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(obj))
                 .andExpectAll(status().is3xxRedirection());
-    }
-    @Test
-    void payment() throws Exception {
-        TransferDTO transferDTO = new TransferDTO(11111L, new BigDecimal(2000));
-        String obj = mapper.writeValueAsString(transferDTO);
-        mockMvc.perform(MockMvcRequestBuilders.post("/v3/payment/pay")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(obj))
-                .andExpectAll(status().is4xxClientError());
     }
 }

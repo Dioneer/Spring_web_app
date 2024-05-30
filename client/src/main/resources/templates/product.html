@@ -28,7 +28,7 @@
         <div th:if="${products.productImage}">
                 <img th:src="@{/v3/image/{id}/findImage(id=${products.id})}" width="300">
         </div>
-        <form th:action="@{/v3/storage?id=${idUser}}" method="get">
+        <form th:action="@{/v3/storage}" method="get">
             <button type="submit">Back</button>
         </form>
     </div>

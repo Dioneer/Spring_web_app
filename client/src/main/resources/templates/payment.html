@@ -1,10 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Payment</title>
 </head>
 <body>
-
+<div th:insert="~{fragment::home}"></div>
+<div>
+    <p th:text="|Id: ${payments.id}|">Product</p>
+    <p th:text="|CartNumber: ${payments.cartNumber}|">cartNumber</p>
+    <p th:text="|Spend: ${payments.storageBalance}|">storageBalance</p>
+    <p th:text="|CartBalance: ${payments.cartBalance}|">cartBalance</p>
+</div>
 </body>
+<div th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="${error}">Error message</p>
+</div>
 </html>

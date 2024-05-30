@@ -35,6 +35,15 @@
 <form th:action="@{/v3/users/{userId}/delete(userId=${user.id})}" method="post">
     <button type="submit">Remove</button>
 </form>
+<form th:action="@{/v3/payment/{userId}(userId=${user.id})}">
+    <button type="submit">Your payment cred</button>
+</form>
+<form th:action="@{/v3/payment/cart}" method="post">
+    <label for="cartNumber">Cart Number:
+        <input id="cartNumber" type="text" name="cartNumber">
+    </label><br>
+    <button type="submit">Your count</button>
+</form>
 <div th:if="${errors}">
     <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
 </div>

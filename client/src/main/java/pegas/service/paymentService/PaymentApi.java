@@ -1,37 +1,41 @@
 package pegas.service.paymentService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 import pegas.aspect.TrackUserAction;
 import pegas.dto.payment.PaymentDTO;
 import pegas.dto.payment.TransferDTO;
 import pegas.dto.payment.UserCartDto;
-import pegas.dto.storage.ReadProductDTO;
 import pegas.service.exceptions.RequestErrorException;
 import pegas.service.exceptions.ServerErrorException;
-
-import java.util.List;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 @Service
 @RequiredArgsConstructor
 public class PaymentApi {
-    @Value("${app.path.payment}")
-    private String paymentApi;
 
     private final RestClient restClient;
 
+    private final DiscoveryClient discoveryClient;
+
+    private String serviceURL() {
+        ServiceInstance instance = discoveryClient.getInstances("appPayment")
+                .stream().findAny()
+                .orElseThrow(() -> new IllegalStateException("appStorage service unavailable"));
+        UriComponentsBuilder uriComponentsBuilder = UriComponentsBuilder
+                .fromHttpUrl(instance.getUri().toString() + "/api/v2");
+        return uriComponentsBuilder.toUriString();
+    }
+
     public PaymentDTO[] allPayments(){
         return restClient.post()
-                .uri(paymentApi+"/all")
+                .uri(serviceURL()+"/all")
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .retrieve()
@@ -48,7 +52,7 @@ public class PaymentApi {
 
     public PaymentDTO findById(Long id){
         return restClient.post()
-                .uri(paymentApi+"/"+id)
+                .uri(serviceURL()+"/"+id)
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
@@ -64,7 +68,7 @@ public class PaymentApi {
 
     public PaymentDTO cart(UserCartDto userCartDto){
         return restClient.post()
-                .uri(paymentApi+"/personalInfo")
+                .uri(serviceURL()+"/personalInfo")
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .body(userCartDto)
@@ -83,7 +87,7 @@ public class PaymentApi {
     @TrackUserAction
     public String pay(TransferDTO transferDTO){
         return restClient.post()
-                .uri(paymentApi)
+                .uri(serviceURL())
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .body(transferDTO)

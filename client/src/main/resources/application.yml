@@ -15,11 +15,16 @@ spring:
       show_sql: true
       format_sql: true
       hbm2ddl.auto: validate
-app:
-  path:
-    storage: http://localhost:8080/api/v1
-    payment: http://localhost:8081/api/v2
+#app:
+#  path:
+#    storage: http://localhost:8080/api/v1
+#    payment: http://localhost:8081/api/v2
 
 image:
   path:
     part: ./client/images
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: http://localhost:8761/eureka
