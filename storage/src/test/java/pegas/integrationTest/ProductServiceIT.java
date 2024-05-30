@@ -58,7 +58,7 @@ public class ProductServiceIT {
         FileInputStream fis = new FileInputStream("images/light_bulb_light_dark_226180_1200x1600.jpg");
         MockMultipartFile multipartFile = new MockMultipartFile("file", fis);
         CreateEditProductDTO createDTO= new CreateEditProductDTO();
-        createDTO.setProductMark("Материнская плата Gerber");
+        createDTO.setProductModel("Материнская плата Gerber");
         createDTO.setProductMark("H610M-MMM");
         createDTO.setPrice("17990.00");
         createDTO.setAmount(18);
@@ -110,12 +110,12 @@ public class ProductServiceIT {
     }
     @Test
     void unReservation() throws IOException {
-        Integer amount =23;
-        Integer reservation = 5;
+        Integer amount =18;
+        Integer reservation = 0;
         FileInputStream fis = new FileInputStream("images/light_bulb_light_dark_226180_1200x1600.jpg");
         MockMultipartFile multipartFile = new MockMultipartFile("file", fis);
         CreateEditProductDTO createDTO= new CreateEditProductDTO();
-        createDTO.setProductMark("Материнская плата Gerber");
+        createDTO.setProductModel("Материнская плата Gerber");
         createDTO.setProductMark("H610M-MMM");
         createDTO.setPrice("17990.00");
         createDTO.setAmount(18);

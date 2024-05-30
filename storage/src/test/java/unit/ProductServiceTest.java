@@ -37,10 +37,6 @@ public class ProductServiceTest {
     @Mock
     private ImageService imageService;
 
-    ReadProductDTO map(Product from) {
-        return new ReadProductDTO(1L, "asd", "asd",
-                "12",32,0,"asdasd");
-    }
     @Test
     void findById(){
         Product product = Mockito.mock(Product.class);
