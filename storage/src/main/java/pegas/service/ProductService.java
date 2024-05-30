@@ -35,7 +35,10 @@ public class ProductService implements CRUDService{
 
     @Override
     public List<ReadProductDTO> findAll(){
-        return Optional.of(repository.findAll().stream().map(read::map).toList())
+        return Optional.of(repository.findAll().stream().map(i->{
+                    System.out.println("+++++++++++++++++++++++++"+i);
+            return read.map(i);
+                }).toList())
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "no products in this shop"));
     }
 
@@ -52,7 +55,9 @@ public class ProductService implements CRUDService{
 
     @Override
     public Optional<ReadProductDTO> findById(Long id){
-        return repository.findById(id).map(read::map);
+        return repository.findById(id).map(i->{
+            return read.map(i);
+        });
     }
 
     @Override
