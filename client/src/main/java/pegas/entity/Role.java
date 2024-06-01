@@ -1,5 +1,12 @@
 package pegas.entity;
 
-public enum Role {
-    SILVER, GOLD,BRILLIANT
+import org.springframework.security.core.GrantedAuthority;
+
+public enum Role implements GrantedAuthority {
+    SILVER, GOLD,BRILLIANT;
+
+    @Override
+    public String getAuthority() {
+        return name();
+    }
 }

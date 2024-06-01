@@ -1,7 +1,6 @@
 package pegas.controller.storageController;
 
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +9,9 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pegas.dto.payment.PaymentDTO;
 import pegas.dto.payment.TransferDTO;
 import pegas.dto.storage.OrderDTO;
 import pegas.dto.storage.ProductFilter;
-import pegas.dto.userdto.ReadUserDTO;
 import pegas.service.clientService.ClientService;
 import pegas.service.paymentService.PaymentApi;
 import pegas.service.storageService.StorageApi;
@@ -32,10 +29,15 @@ public class StorageController {
     private final PaymentApi paymentApi;
 
     @GetMapping
-    public String findAllProducts(Model model, @RequestParam("id") Long userId){
+    public String findAllProducts(Model model,  @RequestParam(name = "id", required = false) Long userId){
         model.addAttribute("products", storageApi.getAll());
         model.addAttribute("userId", userId);
         return "index";
+    }
+
+    @PostMapping("/home")
+    public String home(@SessionAttribute("userId") Long userId){
+        return "redirect:/v3/users/"+userId;
     }
 
     @GetMapping("/filter")

@@ -6,15 +6,16 @@
     <title>Users</title>
 </head>
 <body>
+<div th:insert="~{fragment::logout}"></div>
 <form th:action="@{/v3/storage/filter?id=${idUser}}">
     <label for="productMark">Mark:
-        <input id="productMark" type="text" name="productMark">
+        <input class="input" id="productMark" type="text" name="productMark">
     </label><br>
     <label for="productModel">Model:
-        <input id="productModel" type="text" name="productModel">
+        <input class="input" id="productModel" type="text" name="productModel">
     </label><br>
     <label for="price">Price:
-        <input id="price" type="text" name="price">
+        <input class="input" id="price" type="text" name="price">
     </label><br>
     <button type="submit">Filter</button>
 </form>

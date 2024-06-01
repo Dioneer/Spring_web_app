@@ -2,6 +2,8 @@ package pegas.controller.clientController;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +15,7 @@ import pegas.dto.userdto.CreateUpdateUserDTO;
 import pegas.dto.userdto.LoginDTO;
 import pegas.dto.userdto.ReadUserDTO;
 import pegas.entity.Role;
+import pegas.entity.User;
 import pegas.service.clientService.ClientService;
 
 import java.util.Arrays;
@@ -30,20 +33,28 @@ public class ClientController {
         return Arrays.asList(Role.values());
     }
 
-    @GetMapping
+    @GetMapping("/login")
     public String start(){
         return "login";
     }
 
-    @PostMapping("/login")
-    public String authorisation(Model model, @ModelAttribute("login") LoginDTO loginDTO){
-        return "redirect:/v3/storage";
+    /**
+     *
+     * @param model
+     * @param currentUser
+     * @return
+     */
+    @GetMapping("/income")
+    public String authorisation(Model model, @AuthenticationPrincipal UserDetails currentUser){
+        User user = clientService.findByUsername(currentUser.getUsername())
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not found"));
+        return "redirect:/v3/storage?id="+user.getId();
     }
 
     @GetMapping("/{id}")
     public String findById(Model model, @PathVariable("id") Long id){
         clientService.findById(id).map(i-> model.addAttribute("user", i))
-                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND));
+                .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not found"));
         return "user";
     }
 

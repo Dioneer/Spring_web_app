@@ -3,6 +3,9 @@ package pegas.service.clientService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -14,11 +17,12 @@ import pegas.mapper.CreateUpdateUserMapper;
 import pegas.mapper.ReadUserMapper;
 import pegas.repository.UserRepository;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
-public class ClientService implements CRUDService{
+public class ClientService implements CRUDService, UserDetailsService {
    private final CreateUpdateUserMapper createUpdate;
    private final ReadUserMapper readUserMapper;
    private final UserRepository repository;
@@ -66,5 +70,17 @@ public class ClientService implements CRUDService{
                     return createUpdate.map(update, i);
                 }).map(repository::save).map(readUserMapper::map)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not update"));
+    }
+
+    public Optional<User> findByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return findByUsername(username).map(i-> new org.springframework.security.core.userdetails.User(
+                i.getUsername(),
+                i.getPassword(), Collections.singleton(i.getRole())
+        )).orElseThrow(()-> new UsernameNotFoundException("Failed to retrieve user: " + username));
     }
 }

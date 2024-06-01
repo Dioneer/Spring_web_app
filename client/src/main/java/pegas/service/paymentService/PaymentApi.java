@@ -36,7 +36,6 @@ public class PaymentApi {
     public PaymentDTO[] allPayments(){
         return restClient.post()
                 .uri(serviceURL()+"/all")
-                .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,

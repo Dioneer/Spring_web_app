@@ -5,13 +5,15 @@
     <title>logout</title>
 </head>
 <body>
-<div th:fragment="header">
-    <form action="/logout" method="post">
+<div th:fragment="logout">
+    <form action="/v3/users/logout" method="post">
         <button type="submit">Logout</button>
     </form>
 </div>
 <div th:fragment="home">
-    <a th:href="@{/v3/users}">Back home</a>
+    <form action="/v3/storage/home" method="post">
+        <button type="submit">Back Home</button>
+    </form>
 </div>
 </body>
 </html>

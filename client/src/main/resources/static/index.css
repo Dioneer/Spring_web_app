@@ -1,0 +1,6 @@
+input{
+    display:flex;
+    min-height: 50px;
+    padding: 10px;
+    color: #333;
+}
