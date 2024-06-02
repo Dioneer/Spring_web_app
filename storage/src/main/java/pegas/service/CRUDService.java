@@ -12,7 +12,7 @@ public interface CRUDService {
     List<ReadProductDTO> findAll();
     List<ReadProductDTO> findAll(ProductFilter productFilter, Pageable pageable);
     Optional<ReadProductDTO> findById(Long id);
-    boolean deleteProduct(Long id);
+    Boolean deleteProduct(Long id);
     ReadProductDTO create(CreateEditProductDTO createEditProductDTO);
     ReadProductDTO update(CreateEditProductDTO createEditProductDTO, Long id);
 }

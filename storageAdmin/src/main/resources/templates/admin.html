@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en"  xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>
+    <p th:text="|Id: ${products.id}|">Product</p>
+    <form th:action="@{/v4/{userId}/update(userId=${products.id})}" enctype="multipart/form-data" method="post" th:object="${products}">
+        <label for="productMark">Mark
+            <input id="productMark" type="text" name="productMark" th:value="*{productMark}">
+        </label><br>
+        <label for="productModel">Model:
+            <input id="productModel" type="text" name="productModel" th:value="*{productModel}">
+        </label><br>
+        <label for="price">Price:
+            <input id="price" type="text" name="price" th:value="*{price}">
+        </label><br>
+        <label for="reserved">Reserved:
+            <input id="reserved" type="text" name="reserved" th:value="*{reserved}">
+        </label><br>
+        <div th:if="${products.productImage}">
+            <img th:src="@{/api/v4/{id}/image(id=${products.id})}" alt="Product image" width="300">
+        </div>
+        <label for="productImage">Image:
+            <input id="productImage" type="file" name="productImage">
+        </label><br>
+        <button type="submit">Update</button>
+    </form>
+    <form th:action="@{/v4/{userId}/delete(userId=${products.id})}" method="post">
+        <button type="submit">Remove</button>
+    </form></div>
+<div th:if="${errors}">
+    <p style="color: red" th:each="error : ${errors}" th:text="${error}">Error message</p>
+</div>
+</body>
+</html>

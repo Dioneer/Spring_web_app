@@ -6,12 +6,12 @@
 </head>
 <body>
 <div th:fragment="logout">
-    <form action="/v3/users/logout" method="post">
+    <form th:action="@{/v3/users/logout}" method="post">
         <button type="submit">Logout</button>
     </form>
 </div>
 <div th:fragment="home">
-    <form action="/v3/storage/home" method="post">
+    <form th:action="@{/v3/storage/home}" method="post">
         <button type="submit">Back Home</button>
     </form>
 </div>

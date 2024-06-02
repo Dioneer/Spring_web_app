@@ -7,7 +7,7 @@
 </head>
 <body>
 <div th:insert="~{fragment::logout}"></div>
-<form th:action="@{/v3/storage/filter?id=${idUser}}">
+<form th:action="@{/v3/storage/filter}">
     <label for="productMark">Mark:
         <input class="input" id="productMark" type="text" name="productMark">
     </label><br>

@@ -6,7 +6,7 @@
     <title>User</title>
 </head>
 <body>
-<form th:action="@{/v1/create}" enctype="multipart/form-data" method="post" th:object="${product}">
+<form th:action="@{/v4/create}" enctype="multipart/form-data" method="post" th:object="${products}">
     <label for="Mark">Product:
         <input id="Mark" type="text" name="productMark" th:value="*{productMark}">
     </label><br>
@@ -23,7 +23,7 @@
         <input id="product.reserved" type="text" name="reserved" th:value="*{reserved}">
     </label><br>
     <label for="multipartFile">Image:
-        <input id="multipartFile" type="file" name="productImage">
+        <input id="multipartFile" type="file" name="productImage" >
     </label><br>
     <button type="submit">Create</button>
 </form>

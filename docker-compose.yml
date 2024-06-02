@@ -39,3 +39,17 @@ services:
       POSTGRES_DB: postgres
     ports:
       - 5435:5432
+
+  keycloak:
+    image: "quay.io/keycloak/keycloak:23.0.6"
+    container_name: keycloak_serv
+    volumes:
+      - ./config/keycloak:/opt/keycloak/data/import
+    ports:
+      - "18080:8080"
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    command:
+      - start-dev
+      - --import-realm
