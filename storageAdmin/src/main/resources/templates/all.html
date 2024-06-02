@@ -21,6 +21,9 @@
     </label><br>
     <button type="submit">Filter</button>
 </form>
+<form th:action="@{/v4}">
+    <button type="submit">Remove filter</button>
+</form>
 <div th:each="product : ${products}">
     <a th:href="@{'/v4/' + ${product.id}}" th:text="|Id: ${product.id}|">Product</a>
     <p th:text="|Mark: ${product.productMark}|">Product</p>
@@ -34,7 +37,7 @@
         </a>
     </div>
     <form th:action="@{/v4/{id}/startUpdate(id=${product.id})}">
-            <button type="submit">Update</button>
+            <button type="submit">Change product</button>
     </form>
 </div>
 </body>

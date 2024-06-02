@@ -9,15 +9,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
-import pegas.dto.CreateEditProductDTO;
-import pegas.dto.OrderDTO;
-import pegas.dto.ProductFilter;
-import pegas.dto.ReadProductDTO;
+import pegas.dto.*;
 import pegas.service.ProductService;
 
 
 import java.util.List;
-import java.util.Optional;
 
 @RestController
 @RequiredArgsConstructor
@@ -64,20 +60,19 @@ public class ClientProductController {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "image was not found")));
 
     }
-    @PostMapping("/create")
-    public ResponseEntity<ReadProductDTO> create (@PathVariable("id") Long id,
-                                                  @Validated @RequestBody CreateEditProductDTO createEditProductDTO){
-        return ResponseEntity.ok().body(productService.create(createEditProductDTO));
+    @PostMapping(value = "/create")
+    public ResponseEntity<ReadProductDTO> create (@RequestBody SendDTO sendDTO){
+        return ResponseEntity.ok().body(productService.create(sendDTO));
     }
 
-    @PutMapping("/{id}")
+    @PutMapping(value ="/{id}")
     public ResponseEntity<ReadProductDTO> update (@PathVariable("id") Long id,
-                                                  @Validated @RequestBody CreateEditProductDTO createEditProductDTO){
-        return ResponseEntity.ok().body(productService.update(createEditProductDTO, id));
+                                                  @RequestBody SendDTO sendDTO){
+        System.out.println(sendDTO);
+        return ResponseEntity.ok().body(productService.update(sendDTO, id));
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete (@PathVariable("id") Long id){
-        System.out.println("+++++++++++++++++++"+id);
         return ResponseEntity.ok().body(productService.deleteProduct(id));
     }
 

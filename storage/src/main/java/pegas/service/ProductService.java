@@ -10,10 +10,10 @@ import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
-import pegas.dto.CreateEditProductDTO;
 import pegas.dto.ProductFilter;
 import pegas.dto.QPredicates;
 import pegas.dto.ReadProductDTO;
+import pegas.dto.SendDTO;
 import pegas.entity.Product;
 import pegas.mapper.CreateEditProductMapper;
 import pegas.mapper.ReadProductMapper;
@@ -67,22 +67,17 @@ public class ProductService implements CRUDService{
 
     @Override
     @Transactional
-    public ReadProductDTO create(CreateEditProductDTO createEditProductDTO){
-        return Optional.of(createEditProductDTO)
-                .map(i->{
-                    uploadImage(i.getProductImage());
-                    return createEdit.map(i);
-                }).map(repository::save).map(read::map).orElseThrow(()->
+    public ReadProductDTO create(SendDTO sendDTO){
+        return Optional.of(sendDTO)
+                .map(createEdit::map).map(repository::save).map(read::map).orElseThrow(()->
                         new ResponseStatusException(HttpStatus.BAD_REQUEST, "user was not created"));
     }
 
     @Override
     @Transactional
-    public ReadProductDTO update(CreateEditProductDTO createEditProductDTO, Long id){
-        return repository.findById(id).map(i-> {
-            uploadImage(createEditProductDTO.getProductImage());
-            return createEdit.map(createEditProductDTO, i);
-        }).map(repository::save).map(read::map).orElseThrow(()->
+    public ReadProductDTO update(SendDTO sendDTO, Long id){
+        return repository.findById(id).map(i-> createEdit.map(sendDTO, i)).map(repository::save)
+                .map(read::map).orElseThrow(()->
                 new ResponseStatusException(HttpStatus.BAD_REQUEST, "user was not update"));
     }
 

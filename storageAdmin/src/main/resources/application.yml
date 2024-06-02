@@ -4,6 +4,9 @@ server:
 spring:
   application:
     name: storageAdmin
+  servlet:
+    multipart:
+      enabled: true
 
 eureka:
   client:

@@ -1,13 +1,16 @@
 package pegas.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.Serializable;
+
 @Data
-public class CreateEditProductDTO {
+public class CreateEditProductDTO implements Serializable {
     @NotBlank
     @Size(min=3)
     String productMark;
@@ -18,7 +21,7 @@ public class CreateEditProductDTO {
     String price;
     @Positive
     Integer amount;
-    @Positive
+    @NotNull
     Integer reserved;
     MultipartFile productImage;
 }

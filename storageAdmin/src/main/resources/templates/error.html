@@ -6,7 +6,7 @@
 </head>
 <body>
 <div>
-    <p style="color: red" th:each="error : ${errors}" th:text="${error}">Error message</p>
+    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
 </div>
 </body>
 </html>

@@ -17,6 +17,9 @@
         <label for="price">Price:
             <input id="price" type="text" name="price" th:value="*{price}">
         </label><br>
+        <label for="amount">Price:
+            <input id="amount" type="text" name="amount" th:value="*{amount}">
+        </label><br>
         <label for="reserved">Reserved:
             <input id="reserved" type="text" name="reserved" th:value="*{reserved}">
         </label><br>
@@ -28,11 +31,17 @@
         </label><br>
         <button type="submit">Update</button>
     </form>
+    <form th:action="@{/v4/{userId}/unreservation(userId=${products.id})}" method="post">
+        <label for="setAmount">Unreservation:
+            <input id="setAmount" type="text" name="amount">
+        </label>
+        <button type="submit">UnReservation</button>
+    </form></div>
     <form th:action="@{/v4/{userId}/delete(userId=${products.id})}" method="post">
         <button type="submit">Remove</button>
     </form></div>
 <div th:if="${errors}">
-    <p style="color: red" th:each="error : ${errors}" th:text="${error}">Error message</p>
+    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
 </div>
 </body>
 </html>

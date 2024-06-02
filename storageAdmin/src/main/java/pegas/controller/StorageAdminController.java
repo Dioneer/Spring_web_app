@@ -1,20 +1,24 @@
 package pegas.controller;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
+import lombok.SneakyThrows;
+import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import pegas.dto.CreateEditProductDTO;
-import pegas.dto.OrderDTO;
-import pegas.dto.ProductFilter;
-import pegas.dto.ReadProductDTO;
+import pegas.dto.*;
 import pegas.service.StorageService;
+
+import java.io.IOException;
+
+import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 
 @Controller
@@ -51,29 +55,48 @@ public class StorageAdminController{
     public String update(Model model, @PathVariable Long id, @ModelAttribute("products") ReadProductDTO readProductDTO){
         return "redirect:/v4/"+id;
     }
-
-    @PostMapping(value = "/create", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public String create(@ModelAttribute @Validated CreateEditProductDTO create,
-                         BindingResult bindingResult, RedirectAttributes redirectAttributes){
+    @PostMapping(value = "/create")
+    public String create(@ModelAttribute CreateEditProductDTO create, BindingResult bindingResult,
+                         RedirectAttributes redirectAttributes) throws IOException {
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("products", create);
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
-            return "redirect:/v4";
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/v4/startCreate";
         }
-        storageService.create(create);
+        uploadImage(create.getProductImage());
+        SendDTO sendDTO = new SendDTO(create.getProductMark(), create.getProductModel(),create.getPrice(),
+                create.getAmount(),create.getReserved(),create.getProductImage().getOriginalFilename());
+        storageService.create(sendDTO);
         return "redirect:/v4";
     }
-
-    @PostMapping(value = "/{id}/update", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @SneakyThrows
+    private void uploadImage(MultipartFile productImage) {
+        if(!productImage.isEmpty()) {
+            storageService.upload(productImage.getOriginalFilename(), productImage.getInputStream());
+        }
+    }
+    @PostMapping(value = "/{id}/update")
     public String update(@ModelAttribute @Validated CreateEditProductDTO update, @PathVariable Long id,
                          BindingResult bindingResult,RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()){
             redirectAttributes.addFlashAttribute("products", update);
-            redirectAttributes.addFlashAttribute("error", bindingResult.getAllErrors());
-            return "redirect:/v4";
+            redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
+            return "redirect:/v4/"+id+"/startUpdate";
         }
-        storageService.update(id, update);
-        return "redirect:/v4";
+            ReadProductDTO readProductDTO = storageService.getById(id);
+        if (!readProductDTO.getProductImage().equals(update.getProductImage().getOriginalFilename()) ||
+                update.getProductImage().getOriginalFilename().isEmpty()){
+            uploadImage(update.getProductImage());
+            SendDTO sendDTO = new SendDTO(update.getProductMark(), update.getProductModel(),update.getPrice(),
+                    update.getAmount(),update.getReserved(),readProductDTO.getProductImage());
+            System.out.println(sendDTO);
+            storageService.update(id, sendDTO);
+        }else{
+            SendDTO sendDTO = new SendDTO(update.getProductMark(), update.getProductModel(),update.getPrice(),
+                    update.getAmount(),update.getReserved(),update.getProductImage().getOriginalFilename());
+            storageService.update(id, sendDTO);
+        }
+        return "redirect:/v4/"+id;
     }
 
     @PostMapping("/{id}/delete")
@@ -98,8 +121,7 @@ public class StorageAdminController{
 
     @PostMapping("/{id}/unreservation")
     public String unReservation(Model model, @PathVariable("id") Long id, @ModelAttribute @Validated OrderDTO orderDTO,
-                                BindingResult bindingResult, RedirectAttributes redirectAttributes,
-                                @SessionAttribute("userId") Long userId){
+                                BindingResult bindingResult, RedirectAttributes redirectAttributes){
         if(bindingResult.hasErrors()) {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v4/"+id;
@@ -108,10 +130,5 @@ public class StorageAdminController{
         return "redirect:/v4/"+id;
     }
 
-    @ExceptionHandler
-    public String exceptions(Model model, Exception e){
-        model.addAttribute("errors", e.getMessage());
-        return "error";
-    }
 }
 

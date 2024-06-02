@@ -1,18 +1,28 @@
 package pegas.service;
 
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.core.io.FileSystemResource;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
-import pegas.dto.CreateEditProductDTO;
-import pegas.dto.OrderDTO;
-import pegas.dto.ProductFilter;
-import pegas.dto.ReadProductDTO;
+import pegas.dto.*;
 import pegas.service.exceptions.RequestErrorException;
 import pegas.service.exceptions.ServerErrorException;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 
 import static org.springframework.http.MediaType.*;
 
@@ -80,12 +90,12 @@ public class StorageService {
                                     + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO[].class);
     }
-    public ReadProductDTO[] create(CreateEditProductDTO createEditProductDTO){
+    public ReadProductDTO create(SendDTO create) throws IOException {
         return restClient.post()
                 .uri(serviceURL() +"/create")
-                .contentType(MULTIPART_FORM_DATA)
-                .accept(APPLICATION_OCTET_STREAM)
-                .body(createEditProductDTO)
+                .contentType(APPLICATION_JSON)
+                .accept(APPLICATION_JSON)
+                .body(create)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
@@ -94,15 +104,15 @@ public class StorageService {
                 .onStatus(HttpStatusCode::is5xxServerError,
                         (req, res) -> {
                             throw new ServerErrorException("Error! Some problems with path for create: "
-                                    + res.getStatusCode() + res.getStatusText());})
-                .body(ReadProductDTO[].class);
+                                    + res.getStatusCode() + res.getStatusText() + req.getURI()+" ");})
+                .body(ReadProductDTO.class);
     }
-    public ReadProductDTO[] update(Long id, CreateEditProductDTO createEditProductDTO){
+    public ReadProductDTO update(Long id, SendDTO create){
         return restClient.put()
-                .uri(serviceURL() + id)
+                .uri(serviceURL()+"/"+id)
                 .contentType(APPLICATION_JSON)
-                .accept(APPLICATION_OCTET_STREAM)
-                .body(createEditProductDTO)
+                .accept(APPLICATION_JSON)
+                .body(create)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,
                         (req, res) -> {
@@ -112,7 +122,7 @@ public class StorageService {
                         (req, res) -> {
                             throw new ServerErrorException("Error! Some problems with path for update: "
                                     + res.getStatusCode() + res.getStatusText());})
-                .body(ReadProductDTO[].class);
+                .body(ReadProductDTO.class);
     }
     public Boolean delete(Long id){
         return restClient.delete()
@@ -179,6 +189,16 @@ public class StorageService {
                             throw new ServerErrorException("Error!Some problems with path for or unreservation: "
                                     + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
+    }
+
+    @SneakyThrows
+    public void upload(String imagePath, InputStream inputStream){
+        Path fullPath = Path.of("D:\\backup\\4\\Spring_web_shop\\storage\\images", imagePath);
+        try(inputStream){
+            Files.createDirectories(fullPath.getParent());
+            Files.write(fullPath, inputStream.readAllBytes(), StandardOpenOption.CREATE,
+                    StandardOpenOption.TRUNCATE_EXISTING);
+        }
     }
 
 
