@@ -4,14 +4,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
-import org.springframework.core.io.FileSystemResource;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
 import pegas.dto.*;
@@ -109,7 +103,7 @@ public class StorageService {
     }
     public ReadProductDTO update(Long id, SendDTO create){
         return restClient.put()
-                .uri(serviceURL()+"/"+id)
+                .uri(serviceURL()+"/"+id+"/update")
                 .contentType(APPLICATION_JSON)
                 .accept(APPLICATION_JSON)
                 .body(create)
@@ -126,7 +120,7 @@ public class StorageService {
     }
     public Boolean delete(Long id){
         return restClient.delete()
-                .uri(serviceURL() + "/"+id)
+                .uri(serviceURL() + "/"+id+"/delete")
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,

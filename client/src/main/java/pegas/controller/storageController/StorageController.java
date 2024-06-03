@@ -64,6 +64,7 @@ public class StorageController {
             return "redirect:/v3/storage?id="+userId;
         }
         storageApi.reservation(orderDTO, id);
+        clientService.createRes(id, orderDTO.getAmount(), userId);
         return "redirect:/v3/storage?id="+userId;
     }
 
@@ -76,6 +77,7 @@ public class StorageController {
             return "redirect:/v3/storage?id="+userId;
         }
         storageApi.unReservation(orderDTO, id);
+        clientService.unreserved(id, orderDTO.getAmount(), userId);
         return "redirect:/v3/storage?id="+userId;
     }
     @PostMapping("/{id}/sale")
@@ -93,6 +95,7 @@ public class StorageController {
         String result = paymentApi.pay(transferDTO);
         if(result==null) {
             storageApi.sale(orderDTO, id);
+            clientService.createBuy(id, orderDTO.getAmount(), userId);
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, result);
         }

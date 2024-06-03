@@ -5,8 +5,6 @@ import lombok.SneakyThrows;
 import org.springframework.http.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -17,9 +15,6 @@ import pegas.dto.*;
 import pegas.service.StorageService;
 
 import java.io.IOException;
-
-import static org.springframework.http.MediaType.APPLICATION_JSON;
-
 
 @Controller
 @RequiredArgsConstructor
@@ -89,7 +84,6 @@ public class StorageAdminController{
             uploadImage(update.getProductImage());
             SendDTO sendDTO = new SendDTO(update.getProductMark(), update.getProductModel(),update.getPrice(),
                     update.getAmount(),update.getReserved(),readProductDTO.getProductImage());
-            System.out.println(sendDTO);
             storageService.update(id, sendDTO);
         }else{
             SendDTO sendDTO = new SendDTO(update.getProductMark(), update.getProductModel(),update.getPrice(),

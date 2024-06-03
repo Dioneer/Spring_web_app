@@ -3,9 +3,12 @@ package pegas.dto.userdto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Value;
+import pegas.entity.BuyProduct;
+import pegas.entity.ReserveProduct;
 import pegas.entity.Role;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Value
 public class ReadUserDTO {
@@ -19,4 +22,6 @@ public class ReadUserDTO {
     String lastname;
     Role role;
     String image;
+    List<ReserveProduct> reserve;
+    List<BuyProduct> buy;
 }

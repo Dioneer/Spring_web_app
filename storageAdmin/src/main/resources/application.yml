@@ -7,6 +7,30 @@ spring:
   servlet:
     multipart:
       enabled: true
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: http://localhost:18080/realms/storage_admin
+            user-name-attribute: preferred_username
+        registration:
+          storage-admins-app-client-credentials:
+            provider: keycloak
+            authorization-grant-type: client_credentials
+            client-id: storage_app
+            client-secret: xWT6JasJ2c7Dgx4DWDC3iS7AeX5j4wCc
+            scope:
+              - storage_admins
+          storage-admins-app-authorization-code:
+            provider: keycloak
+            client-id: storage_app
+            client-secret: xWT6JasJ2c7Dgx4DWDC3iS7AeX5j4wCc
+            scope:
+              - storage_admins
+              - openid
+              - microprofile-jwt
+
 
 eureka:
   client:

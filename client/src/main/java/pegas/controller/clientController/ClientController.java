@@ -55,6 +55,7 @@ public class ClientController {
     public String findById(Model model, @PathVariable("id") Long id){
         clientService.findById(id).map(i-> model.addAttribute("user", i))
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not found"));
+
         return "user";
     }
 

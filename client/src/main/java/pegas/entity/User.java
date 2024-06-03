@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 @Builder
 @Entity
+@ToString(exclude = {"buyProduct","reserveProduct"})
 @Table(name="users")
 public class User {
     @Id
@@ -28,4 +31,10 @@ public class User {
     private String password;
     @Column(name = "user_image")
     private String image;
+    @Builder.Default
+    @OneToMany(mappedBy = "userId", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<BuyProduct> buyProduct = new ArrayList<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "userId",cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<ReserveProduct> reserveProduct = new ArrayList<>();
 }

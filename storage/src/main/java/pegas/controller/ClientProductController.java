@@ -65,13 +65,12 @@ public class ClientProductController {
         return ResponseEntity.ok().body(productService.create(sendDTO));
     }
 
-    @PutMapping(value ="/{id}")
+    @PutMapping(value ="/{id}/update")
     public ResponseEntity<ReadProductDTO> update (@PathVariable("id") Long id,
                                                   @RequestBody SendDTO sendDTO){
-        System.out.println(sendDTO);
         return ResponseEntity.ok().body(productService.update(sendDTO, id));
     }
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/{id}/delete")
     public ResponseEntity<Boolean> delete (@PathVariable("id") Long id){
         return ResponseEntity.ok().body(productService.deleteProduct(id));
     }
