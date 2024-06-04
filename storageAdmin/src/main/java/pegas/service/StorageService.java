@@ -1,10 +1,16 @@
 package pegas.service;
 
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatusCode;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.client.OAuth2AuthorizeRequest;
+import org.springframework.security.oauth2.client.OAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.registration.ClientRegistrationRepository;
+import org.springframework.security.oauth2.client.web.DefaultOAuth2AuthorizedClientManager;
+import org.springframework.security.oauth2.client.web.OAuth2AuthorizedClientRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -17,15 +23,39 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Objects;
 
 import static org.springframework.http.MediaType.*;
 
 @Service
-@RequiredArgsConstructor
 public class StorageService {
-    private final DiscoveryClient discoveryClient;
 
+    private final OAuth2AuthorizedClientManager authorizedClientManager;
+    private final DiscoveryClient discoveryClient;
     private final RestClient restClient;
+
+    public StorageService(DiscoveryClient discoveryClient,
+                          ClientRegistrationRepository clientRegistrationRepository,
+                          OAuth2AuthorizedClientRepository authorizedClientRepository) {
+        this.discoveryClient = discoveryClient;
+        this.authorizedClientManager = new DefaultOAuth2AuthorizedClientManager(
+                clientRegistrationRepository, authorizedClientRepository);
+        this.restClient = RestClient.builder()
+                .requestInterceptor((request, body, execution) -> {
+                    if (!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+                        var token = Objects.requireNonNull(this.authorizedClientManager.authorize(
+                                        OAuth2AuthorizeRequest
+                                                .withClientRegistrationId("storage-admins-app-client-credentials")
+                                                .principal(SecurityContextHolder.getContext().getAuthentication())
+                                                .build()))
+                                .getAccessToken().getTokenValue();
+                        request.getHeaders().setBearerAuth(token);
+                    }
+
+                    return execution.execute(request, body);
+                })
+                .build();
+    }
 
     private String serviceURL() {
         ServiceInstance instance = discoveryClient.getInstances("appStorage")

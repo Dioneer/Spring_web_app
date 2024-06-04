@@ -77,6 +77,7 @@ public class ClientService implements CRUDService, UserDetailsService {
 
     public void unreserved(Long id, int amount, Long userId) {
         ReserveProduct reserveProduct = reserveRepository.findByUserIdAndProductId(userId, id).orElse(null);
+        assert reserveProduct != null;
         if(reserveProduct.getAmount()>=amount){
             reserveProduct.setAmount(reserveProduct.getAmount()-amount);
             reserveRepository.save(reserveProduct);

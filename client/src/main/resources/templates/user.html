@@ -31,12 +31,19 @@
         <label th:for="${role}" th:text="${role}">Role name</label>
     </div>
     <button type="submit">Update</button>
+</form>
     <p>Reserved</p>
     <div th:each="reserved: ${user.reserve}">
         <p th:text="|ID: ${reserved.productId}|"></p>
         <p th:text="|Mark: ${reserved.productMark}|"></p>
         <p th:text="|Model: ${reserved.productModel}|"></p>
         <p th:text="|Price: ${reserved.price}|"></p>
+        <form th:action="@{/v3/storage/{id}/unreservation(id=${reserved.productId})}" method="post">
+            <label for="amount">Amount:
+                <input id="amount" type="text" name="amount">
+            </label>
+            <button type="submit">Remove from reserve</button>
+        </form>
         <p th:text="|Amount: ${reserved.amount}|"></p>
     </div>
     <p>Bought</p>
@@ -47,7 +54,6 @@
         <p th:text="|Price: ${bought.price}|"></p>
         <p th:text="|Amount: ${bought.amount}|"></p>
     </div>
-</form>
 
 <form th:action="@{/v3/users/{userId}/delete(userId=${user.id})}" method="post">
     <button type="submit">Remove</button>

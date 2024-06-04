@@ -19,13 +19,13 @@ spring:
             provider: keycloak
             authorization-grant-type: client_credentials
             client-id: storage_app
-            client-secret: xWT6JasJ2c7Dgx4DWDC3iS7AeX5j4wCc
+            client-secret: q3h9h9U0ojyqX3bNrncInEVHaXoExNFo
             scope:
               - storage_admins
           storage-admins-app-authorization-code:
             provider: keycloak
             client-id: storage_app
-            client-secret: xWT6JasJ2c7Dgx4DWDC3iS7AeX5j4wCc
+            client-secret: q3h9h9U0ojyqX3bNrncInEVHaXoExNFo
             scope:
               - storage_admins
               - openid
