@@ -15,7 +15,7 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.authorizeHttpRequests(i -> i
-                        .requestMatchers( "v3/storage","v3/image/**").permitAll()
+                        .requestMatchers( "/v3/storage","/v3/image/**","/actuator/prometheus").permitAll()
                         .anyRequest().authenticated())
                 .formLogin(login -> login.loginPage("/v3/users/login")
                         .successHandler(successHandler)
