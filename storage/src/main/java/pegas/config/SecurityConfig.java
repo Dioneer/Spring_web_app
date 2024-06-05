@@ -17,7 +17,7 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/v1","/api/v1/filter").permitAll()
+                        .requestMatchers("/api/v1/reg","/api/v1/filter").permitAll()
                         .requestMatchers( antMatcher("/api/v1/{\\id}"), antMatcher("/api/v1/{\\id}/sale")
                         ,antMatcher("/api/v1/{\\id}/reservation")
                                 ,antMatcher("/api/v1/{\\id}/unreservation")

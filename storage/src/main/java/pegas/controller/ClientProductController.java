@@ -26,6 +26,11 @@ public class ClientProductController {
         return ResponseEntity.ok().body(productService.findAll());
     }
 
+    @GetMapping("/reg")
+    public ResponseEntity<List<ReadProductDTO>> getReg(){
+        return ResponseEntity.ok().body(productService.findAll());
+    }
+
     @PostMapping("/filter")
     public ResponseEntity<List<ReadProductDTO>> findAllByFilter(@RequestBody ProductFilter filter, Pageable pageable){
         return ResponseEntity.ok().body(productService.findAll(filter, pageable));

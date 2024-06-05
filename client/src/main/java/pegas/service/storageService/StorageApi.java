@@ -37,7 +37,7 @@ public class StorageApi {
 
     public ReadProductDTO[] getAll(){
         return restClient.get()
-                .uri(serviceURL())
+                .uri(serviceURL()+"/reg")
                 .accept(APPLICATION_JSON)
                 .retrieve()
                 .onStatus(HttpStatusCode::is4xxClientError,

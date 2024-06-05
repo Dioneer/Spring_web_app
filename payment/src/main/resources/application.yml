@@ -16,6 +16,27 @@ spring:
       format_sql: true
       hbm2ddl.auto: validate
 
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+    shutdown:
+      enabled: true
+    info:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: prometheus, metrics, info, health, shutdown
+
+
 eureka:
   client:
     serviceUrl:

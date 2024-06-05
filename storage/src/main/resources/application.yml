@@ -22,7 +22,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:18080/realms/storage_admin
+          issuer-uri: http://localhost:18080/realms/sandbox
 
 app:
   image:

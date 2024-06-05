@@ -12,22 +12,21 @@ spring:
       client:
         provider:
           keycloak:
-            issuer-uri: http://localhost:18080/realms/storage_admin
+            issuer-uri: http://localhost:18080/realms/sandbox
             user-name-attribute: preferred_username
         registration:
-          storage-admins-app-client-credentials:
+          storage-app-client-credential:
             provider: keycloak
             authorization-grant-type: client_credentials
-            client-id: storage_app
-            client-secret: q3h9h9U0ojyqX3bNrncInEVHaXoExNFo
+            client-id: storage-app
+            client-secret: i95xYkoFz7KBXCVGcAx3TRyo6O1LZMLL
             scope:
-              - storage_admins
-          storage-admins-app-authorization-code:
+              - greetings
+          storage-app-authorization-code:
             provider: keycloak
-            client-id: storage_app
-            client-secret: q3h9h9U0ojyqX3bNrncInEVHaXoExNFo
+            client-id: storage-app
+            client-secret: i95xYkoFz7KBXCVGcAx3TRyo6O1LZMLL
             scope:
-              - storage_admins
               - openid
               - microprofile-jwt
 
