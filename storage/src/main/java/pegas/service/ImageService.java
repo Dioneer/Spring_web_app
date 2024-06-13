@@ -15,6 +15,11 @@ public class ImageService {
     @Value("${app.image.path}")
     private String bucket;
 
+    /**
+     * save image from frontend
+     * @param imagePath path for save
+     * @param inputStream
+     */
     @SneakyThrows
     public void upload(String imagePath, InputStream inputStream){
         Path fullPath = Path.of(bucket, imagePath);
@@ -25,7 +30,11 @@ public class ImageService {
         }
     }
 
-
+    /**
+     * get image from storage
+     * @param imagePath path for save
+     * @return
+     */
     @SneakyThrows
     public Optional<byte[]> get(String imagePath){
         Path fullPath = Path.of(bucket, imagePath);

@@ -40,12 +40,22 @@ public class ClientService implements CRUDService, UserDetailsService {
     private final ReadReservedMapper readReservedMapper;
     private final StorageApi storageApi;
 
-
+    /**
+     * CRUD operation find 1 by id
+     * @param id of user
+     * @return Optional<ReadUserDTO>
+     */
     @Override
     public Optional<ReadUserDTO> findById(Long id) {
         return repository.findById(id).map(readUserMapper::map);
     }
 
+    /**
+     * a service for adding an item for purchase to the client database
+     * @param id of user
+     * @param amount of selling products
+     * @param userId query parameter of user identification
+     */
     public void createBuy(Long id, int amount, Long userId) {
         BuyProduct buyProduct = buyRepository.findByUserIdAndProductId(userId, id).orElse(null);
         if(buyProduct==null) {
@@ -59,6 +69,13 @@ public class ClientService implements CRUDService, UserDetailsService {
             BuyProduct buy = buyRepository.save(buyProduct);
         }
     }
+
+    /**
+     * a service for adding an item for reservation to the client database
+     * @param id of user
+     * @param amount of selling products
+     * @param userId query parameter of user identification
+     */
     public void createRes(Long id, int amount, Long userId) {
         ReserveProduct reserveProduct= reserveRepository.findByUserIdAndProductId(userId, id).orElse(null);
         System.out.println(reserveProduct);
@@ -74,6 +91,12 @@ public class ClientService implements CRUDService, UserDetailsService {
         }
     }
 
+    /**
+     * a service for unreserved an item from database
+     * @param id of user
+     * @param amount of selling products
+     * @param userId query parameter of user identification
+     */
     public void unreserved(Long id, int amount, Long userId) {
         ReserveProduct reserveProduct = reserveRepository.findByUserIdAndProductId(userId, id).orElse(null);
         assert reserveProduct != null;
@@ -89,6 +112,13 @@ public class ClientService implements CRUDService, UserDetailsService {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "not enough amount");
         }
     }
+
+    /**
+     * CRUD delete operation of reserved product
+     * @param id of product
+     * @param userId of user
+     * @return true if ok or false if error
+     */
     public boolean delete(Long id, Long userId){
         return reserveRepository.findByUserIdAndProductId(userId, id).map(i->{
                     reserveRepository.delete(i);
@@ -97,6 +127,11 @@ public class ClientService implements CRUDService, UserDetailsService {
                 }).orElse(false);
     }
 
+    /**
+     * CRUD delete operation of user
+     * @param id of user
+     * @return true if ok or false if error
+     */
     @Override
     public boolean deleteUser(Long id) {
         return repository.findById(id).map(i->{
@@ -106,6 +141,11 @@ public class ClientService implements CRUDService, UserDetailsService {
         }).orElse(false);
     }
 
+    /**
+     * CRUD create operation of user
+     * @param create dto for user
+     * @return ReadUserDto if successfully
+     */
     @Override
     public ReadUserDTO create(CreateUpdateUserDTO create) {
         return Optional.of(create).map(i->{
@@ -115,17 +155,33 @@ public class ClientService implements CRUDService, UserDetailsService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not create"));
     }
 
+    /**
+     * save image from form
+     * @param multipartFile from form
+     */
     @SneakyThrows
     private void uploadImage(MultipartFile multipartFile) {
         if(!multipartFile.isEmpty()) {
             imageClientService.upload(multipartFile.getOriginalFilename(), multipartFile.getInputStream());
         }
     }
+
+    /**
+     * find user image
+     * @param id of user
+     * @return Optional<byte[]> if successfully
+     */
     public Optional<byte[]> findUserImage(Long id){
         return repository.findById(id).map(User::getImage).filter(StringUtils::hasText)
                 .flatMap(imageClientService::get);
     }
 
+    /**
+     * CRUD update operation of user
+     * @param update dto
+     * @param id of user
+     * @return ReadUserDTO if successfully
+     */
     @Override
     public ReadUserDTO update(CreateUpdateUserDTO update, Long id) {
         return repository.findById(id).map(i-> {
@@ -135,10 +191,22 @@ public class ClientService implements CRUDService, UserDetailsService {
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not update"));
     }
 
+    /**
+     * method for find users for form login
+     * @param username unique field form db
+     * @return Optional<User>
+     * @throws UsernameNotFoundException
+     */
     public Optional<User> findByUsername(String username) throws UsernameNotFoundException {
         return repository.findByUsername(username);
     }
 
+    /**
+     * method for find users for form login @Override UserDetailsService
+     * @param username the username identifying the user whose data is required.
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         return findByUsername(username).map(i-> new org.springframework.security.core.userdetails.User(

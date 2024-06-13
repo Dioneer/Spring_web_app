@@ -63,7 +63,7 @@
           <div class="bottom-header__column">
             <ul data-da="menu__body,640,2" class="bottom-header__actions actions-header">
               <li>
-                <form th:action="@{/v3/users//login}" method="post" class="fragment">
+                <form th:action="@{/v3/users/login}" method="post" class="fragment">
                   <button type="submit" class="actions-header__login">Вход</button>
                 </form>
               </li>
@@ -144,14 +144,14 @@
                 <div class="form-checkout__input">
                   <span th:each="role : ${roles}" class="radio">
                     <label th:for="${role}" th:text="${role}" class="form-checkout__label">Role name</label>
-                    <input th:id="${role}" type="radio" name="role" th:value="${role}" th:checked="${role == user.role}">
+                    <input th:id="${role}" type="radio" name="role" th:value="${role}" checked>
                   </span>
                 </div>
               </div>
             </div>
             <div class="form-checkout__bittons form-checkout__bittons_log">
               <button type="submit"
-                      class="order-checkout__btn">Регистрация</button>
+                      class="order-checkout__btn btn">Регистрация</button>
             </div>
           </form>
           <div th:if="${errors}">

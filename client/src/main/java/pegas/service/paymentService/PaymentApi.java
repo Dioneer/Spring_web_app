@@ -24,6 +24,10 @@ public class PaymentApi {
 
     private final DiscoveryClient discoveryClient;
 
+    /**
+     * method for create path for implementation service name from eureka
+     * @return url for eureka
+     */
     private String serviceURL() {
         ServiceInstance instance = discoveryClient.getInstances("appPayment")
                 .stream().findAny()
@@ -33,6 +37,10 @@ public class PaymentApi {
         return uriComponentsBuilder.toUriString();
     }
 
+    /**
+     * find all payments. This method not used yet
+     * @return
+     */
     public PaymentDTO[] allPayments(){
         return restClient.post()
                 .uri(serviceURL()+"/all")
@@ -49,6 +57,11 @@ public class PaymentApi {
                 .body(PaymentDTO[].class);
     }
 
+    /**
+     * CRUD find payment
+     * @param id of user
+     * @return PaymentDTO
+     */
     public PaymentDTO findById(Long id){
         return restClient.post()
                 .uri(serviceURL()+"/"+id)
@@ -65,6 +78,11 @@ public class PaymentApi {
                 .body(PaymentDTO.class);
     }
 
+    /**
+     * CRUD find payment
+     * @param userCartDto
+     * @return
+     */
     public PaymentDTO cart(UserCartDto userCartDto){
         return restClient.post()
                 .uri(serviceURL()+"/personalInfo")
@@ -83,6 +101,11 @@ public class PaymentApi {
                 .body(PaymentDTO.class);
     }
 
+    /**
+     * the method for carrying out the payment
+     * @param transferDTO for transfer payment
+     * @return
+     */
     @TrackUserAction
     public String pay(TransferDTO transferDTO){
         return restClient.post()

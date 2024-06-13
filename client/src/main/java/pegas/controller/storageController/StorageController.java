@@ -12,11 +12,14 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pegas.dto.payment.TransferDTO;
 import pegas.dto.storage.OrderDTO;
 import pegas.dto.storage.ProductFilter;
+import pegas.dto.userdto.ReadUserDTO;
+import pegas.entity.ReserveProduct;
 import pegas.service.clientService.ClientService;
 import pegas.service.paymentService.PaymentApi;
 import pegas.service.storageService.StorageApi;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -28,39 +31,77 @@ public class StorageController {
     private final ClientService clientService;
     private final PaymentApi paymentApi;
 
+    /**
+     * Show products after login. Add count for cart
+     * @param model standard object of java
+     * @param userId query parameter for identification of user
+     * @return html view index.html
+     */
     @GetMapping
     public String findAllProducts(Model model,  @RequestParam(name = "id", required = false) Long userId){
         model.addAttribute("products", storageApi.getAll());
         model.addAttribute("userId", userId);
-        model.addAttribute("count", clientService.findById(userId).map(i->i.getReserve().size()).
-                orElse(0));
+        List<ReserveProduct> list = clientService.findById(userId).map(ReadUserDTO::getReserve).orElse(null);
+        assert list != null;
+        model.addAttribute("count", list.stream().map(ReserveProduct::getAmount).reduce(0, Integer::sum));
         return "index";
     }
 
+    /**
+     * controller for comeback to personal account
+     * @param userId query parameter for identification of user
+     * @return redirect to personal account
+     */
     @PostMapping("/home")
     public String home(@SessionAttribute("userId") Long userId){
         return "redirect:/v3/users/"+userId;
     }
 
+    /**
+     * product filtrated by Model Mark and Price parameters. Add count for cart
+     * @param model standard object of java
+     * @param productFilter object to filter parameters
+     * @param userId query parameter for identification of user
+     * @return html view index.html
+     */
     @GetMapping("/filter")
     public String findAllProductsByFilter(Model model, ProductFilter productFilter,@SessionAttribute("userId") Long userId){
         model.addAttribute("products", storageApi.getAllByFilter(productFilter));
         model.addAttribute("filter", productFilter);
-        model.addAttribute("count", clientService.findById(userId).map(i->i.getReserve().size()).
-                orElse(0));
+        List<ReserveProduct> list = clientService.findById(userId).map(ReadUserDTO::getReserve).orElse(null);
+        assert list != null;
+        model.addAttribute("count", list.stream().map(ReserveProduct::getAmount).reduce(0, Integer::sum));
         return "index";
     }
 
+    /**
+     * find just 1 product. Add count for cart
+     * @param model standard object of java
+     * @param id of product
+     * @param userId query parameter for identification of user.
+     * @return html view product.html
+     */
     @GetMapping("/{id}")
     public String findProductsById(Model model, @PathVariable("id") Long id, @SessionAttribute("userId") Long userId){
         return Optional.of(storageApi.getById(id)).map(i->{
         model.addAttribute("products", storageApi.getById(id));
-        model.addAttribute("count", clientService.findById(userId).map(j->j.getReserve().size()).
-                    orElse(0));
+            List<ReserveProduct> list = clientService.findById(userId).map(ReadUserDTO::getReserve).orElse(null);
+            assert list != null;
+            model.addAttribute("count", list.stream().map(ReserveProduct::getAmount).reduce(0, Integer::sum));
         return "product";
         }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }
 
+    /**
+     * method for reservation
+     * @param model standard object of java
+     * @param id of user
+     * @param orderDTO object for rest service
+     * @param bindingResult collect all errors from @validated
+     * @param redirectAttributes redirect attributes include object parameters
+     * @param userId query parameter for identification of user
+     * @return redirect to page with all products
+     */
     @PostMapping("/{id}/reservation")
     public String reservation(Model model, @PathVariable("id") Long id, @ModelAttribute @Validated OrderDTO orderDTO,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes,
@@ -74,6 +115,16 @@ public class StorageController {
         return "redirect:/v3/storage?id="+userId;
     }
 
+    /**
+     * method for unreservation
+     * @param model standard object of java
+     * @param id of user
+     * @param orderDTO object for rest service
+     * @param bindingResult collect all errors from @validated
+     * @param redirectAttributes redirect attributes include object parameters
+     * @param userId query parameter for identification of user
+     * @return redirect to page with all products
+     */
     @PostMapping("/{id}/unreservation")
     public String unReservation(Model model, @PathVariable("id") Long id, @ModelAttribute @Validated OrderDTO orderDTO,
                                 BindingResult bindingResult, RedirectAttributes redirectAttributes,
@@ -82,10 +133,24 @@ public class StorageController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/storage?id="+userId;
         }
+        System.out.println("++++++++++++++++++++++1"+id);
         storageApi.unReservation(orderDTO, id);
+        System.out.println("++++++++++++++++++++++2"+storageApi.unReservation(orderDTO, id));
         clientService.unreserved(id, orderDTO.getAmount(), userId);
+        System.out.println("++++++++++++++++++++++3");
         return "redirect:/v3/storage?id="+userId;
     }
+
+    /**
+     * method for sale
+     * @param model standard object of java
+     * @param id of user
+     * @param orderDTO object for rest service
+     * @param bindingResult collect all errors from @validated
+     * @param redirectAttributes redirect attributes include object parameters
+     * @param userId query parameter for identification of user
+     * @return redirect to page with all products
+     */
     @PostMapping("/{id}/sale")
     public String productSale(Model model, @PathVariable("id") Long id, @ModelAttribute @Validated OrderDTO orderDTO,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes,

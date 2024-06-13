@@ -18,20 +18,38 @@ import java.util.Optional;
 public class PaymentService {
     private final PaymentRepository paymentRepository;
 
+    /**
+     * find payment by cart number
+     * @param userDataFind cart number
+     * @return Optional<Payment>
+     */
     public Optional<Payment> findByCartNumber(UserDataFind userDataFind){
         return Optional.of(paymentRepository.findByCartNumber(userDataFind.getCartNumber()));
     }
 
+    /**
+     * find payment by id of user
+     * @param id of user
+     * @return Optional<Payment>
+     */
     public Optional<Payment> findByUserId(Long id){
         return Optional.of(paymentRepository.findByUserId(id));
     }
 
-
+    /**
+     * CRUD find all payments. Don't use yet
+     * @return List<Payment>
+     */
     public List<Payment> findAll(){
         return Optional.of(paymentRepository.findAll())
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND,"nothing was found"));
     }
 
+    /**
+     * transactional of payment
+     * @param transfer cart number and sum
+     * @return String
+     */
     @Transactional
     public String transaction(Transfer transfer) {
        return  Optional.of(paymentRepository.findByCartNumber(transfer.getCartNumber())).map(i->{

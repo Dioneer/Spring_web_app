@@ -19,13 +19,13 @@ spring:
             provider: keycloak
             authorization-grant-type: client_credentials
             client-id: storage-app
-            client-secret: eV4srQmnIiNruPgueVJ3xQs8UdeT2cLg
+            client-secret: aDrAC2X0SvF450LS6vAR1pZcGRNvDFyM
             scope:
               - greetings
           storage-app-authorization-code:
             provider: keycloak
             client-id: storage-app
-            client-secret: eV4srQmnIiNruPgueVJ3xQs8UdeT2cLg
+            client-secret: aDrAC2X0SvF450LS6vAR1pZcGRNvDFyM
             scope:
               - openid
               - microprofile-jwt
@@ -35,3 +35,7 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+
+image:
+  path:
+    part: D:\\backup\\4\\Spring_web_shop\\storage\\images

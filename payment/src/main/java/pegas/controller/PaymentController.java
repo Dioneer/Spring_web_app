@@ -19,23 +19,43 @@ import java.util.List;
 public class PaymentController {
     private final PaymentService paymentService;
 
+    /**
+     * CRUD find all
+     * restController
+     * @return
+     */
     @PostMapping("/all")
     public ResponseEntity<List<Payment>> findAll(){
         return ResponseEntity.ok().body(paymentService.findAll());
     }
 
+    /**
+     * find paym,ent by user id
+     * @param id of user
+     * @return ResponseEntity<Payment>
+     */
     @PostMapping("/{id}")
     public ResponseEntity<Payment> findByUserId(@PathVariable("id") Long id){
         return ResponseEntity.ok().body(paymentService.findByUserId(id)
                 .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "cart not found")));
     }
 
+    /**
+     * find payment by cart number
+     * @param userDataFind
+     * @return ResponseEntity<Payment>
+     */
     @PostMapping("/personalInfo")
     public ResponseEntity<Payment> findByCartNumber(@RequestBody @Validated UserDataFind userDataFind){
             return ResponseEntity.ok().body(paymentService.findByCartNumber(userDataFind)
                     .orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND, "cart not found")));
     }
 
+    /**
+     * payment transaction
+     * @param transfer
+     * @return
+     */
     @PostMapping
     public ResponseEntity<String> payment(@RequestBody @Validated Transfer transfer){
         try{

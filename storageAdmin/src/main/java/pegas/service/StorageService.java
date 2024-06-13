@@ -2,6 +2,7 @@ package pegas.service;
 
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.http.HttpStatusCode;
@@ -27,6 +28,13 @@ public class StorageService {
     private final DiscoveryClient discoveryClient;
     private final RestClient restClient;
 
+    @Value("${image.path.part}")
+    private String bucket;
+
+    /**
+     * method for create url by eureka
+     * @return String
+     */
     private String serviceURL() {
         ServiceInstance instance = discoveryClient.getInstances("appStorage")
                 .stream().findAny()
@@ -35,6 +43,11 @@ public class StorageService {
                 .fromHttpUrl(instance.getUri().toString() + "/api/v1");
         return uriComponentsBuilder.toUriString();
     }
+
+    /**
+     * CRUD get all
+     * @return ReadProductDTO[]
+     */
     public ReadProductDTO[] getAll(){
         return restClient.get()
                 .uri(serviceURL())
@@ -51,6 +64,11 @@ public class StorageService {
                 .body(ReadProductDTO[].class);
     }
 
+    /**
+     * CRUD get by id
+     * @param id if product
+     * @return ReadProductDTO
+     */
     public ReadProductDTO getById(Long id){
         return restClient.get()
                 .uri(serviceURL() +"/"+id)
@@ -66,6 +84,12 @@ public class StorageService {
                                     + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
     }
+
+    /**
+     * find by filter
+     * @param productFilter String productMark; String productModel; BigDecimal price;
+     * @return ReadProductDTO[]
+     */
 
     public ReadProductDTO[] getAllByFilter(ProductFilter productFilter){
         return restClient.post()
@@ -84,6 +108,13 @@ public class StorageService {
                                     + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO[].class);
     }
+
+    /**
+     * CRUD create
+     * @param create
+     * @return  ReadProductDTO
+     * @throws IOException
+     */
     public ReadProductDTO create(SendDTO create) throws IOException {
         return restClient.post()
                 .uri(serviceURL() +"/create")
@@ -101,6 +132,13 @@ public class StorageService {
                                     + res.getStatusCode() + res.getStatusText() + req.getURI()+" ");})
                 .body(ReadProductDTO.class);
     }
+
+    /**
+     * CRUD update
+     * @param id of product
+     * @param create
+     * @return ReadProductDTO
+     */
     public ReadProductDTO update(Long id, SendDTO create){
         return restClient.put()
                 .uri(serviceURL()+"/"+id+"/update")
@@ -118,6 +156,12 @@ public class StorageService {
                                     + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
     }
+
+    /**
+     * CRUD delete
+     * @param id of product
+     * @return ReadProductDTO
+     */
     public Boolean delete(Long id){
         return restClient.delete()
                 .uri(serviceURL() + "/"+id+"/delete")
@@ -133,6 +177,12 @@ public class StorageService {
                                     + res.getStatusCode() + res.getStatusText());})
                 .body(Boolean.class);
     }
+
+    /**
+     * find image
+     * @param id of product
+     * @return ReadProductDTO
+     */
     public byte[] findImage(Long id){
         return restClient.get()
                 .uri(serviceURL() + "/"+id+"/image")
@@ -149,6 +199,12 @@ public class StorageService {
                 .body(byte[].class);
     }
 
+    /**
+     * reservation of product
+     * @param reservation  int amount;
+     * @param id of product
+     * @return ReadProductDTO
+     */
     public ReadProductDTO reservation(OrderDTO reservation, Long id){
         return restClient.post()
                 .uri(serviceURL() +"/"+id+"/reservation")
@@ -167,6 +223,12 @@ public class StorageService {
                 .body(ReadProductDTO.class);
     }
 
+    /**
+     * unreserved
+     * @param reservation  int amount;
+     * @param id of product
+     * @return ReadProductDTO
+     */
     public ReadProductDTO unReservation(OrderDTO reservation, Long id){
         return restClient.post()
                 .uri(serviceURL() +"/"+id+"/unreservation")
@@ -185,9 +247,14 @@ public class StorageService {
                 .body(ReadProductDTO.class);
     }
 
+    /**
+     * get image
+     * @param imagePath
+     * @param inputStream
+     */
     @SneakyThrows
     public void upload(String imagePath, InputStream inputStream){
-        Path fullPath = Path.of("D:\\backup\\4\\Spring_web_shop\\storage\\images", imagePath);
+        Path fullPath = Path.of(bucket, imagePath);
         try(inputStream){
             Files.createDirectories(fullPath.getParent());
             Files.write(fullPath, inputStream.readAllBytes(), StandardOpenOption.CREATE,

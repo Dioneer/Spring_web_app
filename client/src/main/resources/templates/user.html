@@ -63,14 +63,19 @@
                     <div class="bottom-header__column">
                         <ul data-da="menu__body,640,2" class="bottom-header__actions actions-header">
                             <li>
-                                <a href="" class="actions-header__login"><span>Вход</span></a>
+                                <form th:action="@{/v3/users/login}" method="post" class="fragment">
+                                    <button type="submit" class="actions-header__login">Вход</button>
+                                </form>
                             </li>
                             <li>
-                                <a href="" class="actions-header__reg"><span>Регистрация</span></a>
+                                <form th:action="@{/v3/users/logout}" method="post" class="fragment">
+                                    <button type="submit" class="actions-header__reg">Выход</button>
+                                </form>
                             </li>
                             <li>
-                                <a href="mailto:support@mail.ru"
-                                   class="actions-header__email"><span>support@mail.ru</span></a>
+                                <form th:action="@{/v3/storage/home}" method="post" class="fragment">
+                                    <button type="submit" class="actions-header__email">ЛК</button>
+                                </form>
                             </li>
                         </ul>
                     </div>
@@ -87,7 +92,6 @@
                             </div>
                             <div class="info-header__column">
                                 <a href="" class="info-header__cart">
-                                    <span>12</span>
                                 </a>
                             </div>
                         </div>
@@ -507,12 +511,12 @@
                                 </div>
                                 <div class="form-checkout__bittons form-checkout__bittons_log">
                                     <button type="submit"
-                                            class="order-checkout__btn order-checkout__btn_main">Обновить
+                                            class="order-checkout__btn btn order-checkout__btn_main">Обновить
                                         данные</button>
                                 </div>
                             </form>
                             <form class="order-checkout__btn_l" th:action="@{/v3/users/{userId}/delete(userId=${user.id})}" method="post">
-                                <button class="order-checkout__btn order-checkout__btn_main"
+                                <button class="order-checkout__btn btn order-checkout__btn_main"
                                         type="submit">Удалить</button>
                             </form>
                             </div>
@@ -532,9 +536,9 @@
                                     <form th:action="@{/v3/storage/{id}/unreservation(id=${reserved.productId})}"
                                           method="post">
                                         <label class="reviews-count" for="amount">Amount:
-                                            <input id="amount" type="text" name="amount" class="input">
+                                            <input id="amount" th:value="${reserved.amount}" type="text" name="amount" class="input">
                                         </label>
-                                        <button type="submit" class="order-checkout__btn order-checkout__btn_main">Remove from reserve</button>
+                                        <button type="submit" class="order-checkout__btn btn order-checkout__btn_main">Remove from reserve</button>
                                     </form>
                                     <p th:text="|Amount: ${reserved.amount}|"></p>
                                 </div>
@@ -551,13 +555,13 @@
                                 <div class="body-product__actions actions-product">
                                     <p class="product__title">Данные счета</p>
                                     <form th:action="@{/v3/payment/{userId}(userId=${user.id})}">
-                                    <button type="submit" class="order-checkout__btn order-checkout__btn_main">Your payment credentials</button>
+                                    <button type="submit" class="order-checkout__btn btn order-checkout__btn_main">Your payment credentials</button>
                                     </form>
                                     <form th:action="@{/v3/payment/cart}" method="post">
                                     <label class="reviews-count" for="cartNumber">Cart Number:
                                         <input id="cartNumber" type="text" name="cartNumber" class="input">
                                     </label><br>
-                                    <button type="submit" class="order-checkout__btn order-checkout__btn_main">find by cart number</button>
+                                    <button type="submit" class="order-checkout__btn btn order-checkout__btn_main">find by cart number</button>
                                     </form>
                                 </div>
                             </div>

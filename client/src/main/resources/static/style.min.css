@@ -1220,6 +1220,11 @@ body.lock {
   justify-content: space-between;
   margin: 0px -15px;
 }
+@media (max-width: 479.98px) {
+  .actions-product__row {
+    display: block;
+  }
+}
 .actions-product__column {
   flex: 1 0 33.333%;
 }
@@ -1435,11 +1440,6 @@ body.lock {
   color: #f68038;
   font-size: 36px;
 }
-
-@media (min-width: 1200px){
-.product__content_user{
-    display: block;
-}
 }
 .order-checkout__btn {
   display: inline-flex;
@@ -1583,6 +1583,12 @@ body.lock {
 }
 .content-checkout__form {
   min-width: 355px;
+}
+
+@media (max-width: 479.98px) {
+  .content-checkout__form {
+    min-width: 0px;
+  }
 }
 
 .form-checkout {

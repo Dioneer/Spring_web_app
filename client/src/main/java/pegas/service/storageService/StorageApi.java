@@ -28,7 +28,7 @@ public class StorageApi {
 
     /**
      * connect for eureka with help don't use direct paths
-     * @return
+     * @return String of url
      */
     private String serviceURL() {
         ServiceInstance instance = discoveryClient.getInstances("appStorage")
@@ -41,7 +41,7 @@ public class StorageApi {
 
     /**
      * get all products
-     * @return
+     * @return ReadProductDTO[]
      */
     public ReadProductDTO[] getAll(){
         return restClient.get()

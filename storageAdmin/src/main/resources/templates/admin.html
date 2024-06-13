@@ -61,23 +61,6 @@
       <div class="header__bottom bottom-header">
         <div class="bottom-header__container _container">
           <div class="bottom-header__column">
-            <ul data-da="menu__body,640,2" class="bottom-header__actions actions-header">
-              <li>
-                <form th:action="@{/v3/users//login}" method="post" class="fragment">
-                  <button type="submit" class="actions-header__login">Вход</button>
-                </form>
-              </li>
-              <li>
-                <form th:action="@{/v3/users/logout}" method="post" class="fragment">
-                  <button type="submit" class="actions-header__reg">Выход</button>
-                </form>
-              </li>
-              <li>
-                <form th:action="@{/v3/storage/home}" method="post" class="fragment">
-                  <button type="submit" class="actions-header__email">ЛК</button>
-                </form>
-              </li>
-            </ul>
           </div>
           <div class="bottom-header__column">
             <div data-da="menu__body,640,3" class="bottom-header__info info-header">
@@ -105,6 +88,11 @@
       <div class="middleEarth__body body-text">
         <div class="checkout__title">Изменение данных по продукту</div>
         <div class="content-checkout__body">
+          <a href="" class="images-product__mainslide swiper-slide">
+            <div class="images-product__image">
+              <img th:src="@{/api/v4/{id}/image(id=${products.id})}" alt="">
+            </div>
+          </a>
           <form th:action="@{/v4/{userId}/update(userId=${products.id})}" enctype="multipart/form-data" method="post" th:object="${products}">
             <p th:text="|Id: ${products.id}|" class="form-checkout__label">Product</p>
             <div class="form-checkout__column">

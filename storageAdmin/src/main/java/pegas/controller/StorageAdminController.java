@@ -92,13 +92,14 @@ public class StorageAdminController{
             return "redirect:/v4/"+id+"/startUpdate";
         }
             ReadProductDTO readProductDTO = storageService.getById(id);
-        if (!readProductDTO.getProductImage().equals(update.getProductImage().getOriginalFilename()) ||
+        if (readProductDTO.getProductImage().equals(update.getProductImage().getOriginalFilename()) ||
                 update.getProductImage().getOriginalFilename().isEmpty()){
             uploadImage(update.getProductImage());
             SendDTO sendDTO = new SendDTO(update.getProductMark(), update.getProductModel(),update.getPrice(),
                     update.getAmount(),update.getReserved(),readProductDTO.getProductImage());
             storageService.update(id, sendDTO);
         }else{
+            uploadImage(update.getProductImage());
             SendDTO sendDTO = new SendDTO(update.getProductMark(), update.getProductModel(),update.getPrice(),
                     update.getAmount(),update.getReserved(),update.getProductImage().getOriginalFilename());
             storageService.update(id, sendDTO);
