@@ -16,9 +16,9 @@ create table if not exists admin_user(
 --drop table products;
 
 insert into products(product_mark, product_model, price, amount,reserved,product_image)
-values('Материнская плата MSI PRO', 'H610M-E DDR4', 7990.00, 10,1,'01.jpg'),
-('Материнская плата ASROCK H670M PRO', 'RS123', 11140.00, 5,2,'02.jpg'),
-('Материнская плата MSI MPG', 'B550 GAMING PLUS', 14840.00, 12,3,'03.jpg'),
+values('Материнская плата MSI PRO', 'H610M-E DDR4', 7990.00, 10,0,'01.jpg'),
+('Материнская плата ASROCK H670M PRO', 'RS123', 11140.00, 5,0,'02.jpg'),
+('Материнская плата MSI MPG', 'B550 GAMING PLUS', 14840.00, 12,0,'03.jpg'),
 ('Материнская плата GIGABYTE', 'B760M DS3H DDR4', 12600.00, 8,0,'04.jpg'),
 ('Материнская плата MSI MPG', 'B550 GAMING PLUS', 14840.00, 12,0,'05.webp'),
 ('Материнская плата MSI MPG', 'B550 GAMING PLUS', 14840.00, 12,0,'06.webp');

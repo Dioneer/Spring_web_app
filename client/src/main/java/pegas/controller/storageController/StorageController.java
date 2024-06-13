@@ -133,11 +133,8 @@ public class StorageController {
             redirectAttributes.addFlashAttribute("errors", bindingResult.getAllErrors());
             return "redirect:/v3/storage?id="+userId;
         }
-        System.out.println("++++++++++++++++++++++1"+id);
         storageApi.unReservation(orderDTO, id);
-        System.out.println("++++++++++++++++++++++2"+storageApi.unReservation(orderDTO, id));
         clientService.unreserved(id, orderDTO.getAmount(), userId);
-        System.out.println("++++++++++++++++++++++3");
         return "redirect:/v3/storage?id="+userId;
     }
 

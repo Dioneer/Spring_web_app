@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pegas.dto.userdto.CreateUpdateUserDTO;
 import pegas.dto.userdto.LoginDTO;
 import pegas.dto.userdto.ReadUserDTO;
+import pegas.entity.ReserveProduct;
 import pegas.entity.Role;
 import pegas.entity.User;
 import pegas.service.clientService.ClientService;
@@ -70,7 +71,9 @@ public class ClientController {
     public String findById(Model model, @PathVariable("id") Long id){
         clientService.findById(id).map(i-> model.addAttribute("user", i))
                 .orElseThrow(()->new ResponseStatusException(HttpStatus.NOT_FOUND, "user was not found"));
-
+        List<ReserveProduct> list = clientService.findById(id).map(ReadUserDTO::getReserve).orElse(null);
+        assert list != null;
+        model.addAttribute("count", list.stream().map(ReserveProduct::getAmount).reduce(0, Integer::sum));
         return "user";
     }
 

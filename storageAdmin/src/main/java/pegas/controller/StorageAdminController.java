@@ -34,19 +34,35 @@ public class StorageAdminController{
     private final StorageService storageService;
     private final OAuth2AuthorizedClientManager authorizedClientManager;
 
-
+    /**
+     * CRUD find all
+     * @param model
+     * @return all.html
+     */
     @GetMapping
     public String findAll(Model model){
         model.addAttribute("products", storageService.getAll());
         return "all";
     }
 
+    /**
+     * CRUD find by id
+     * @param model
+     * @param id of product
+     * @return admin.html
+     */
     @GetMapping("/{id}")
     public String findById(Model model, @PathVariable Long id){
         model.addAttribute("products", storageService.getById(id));
         return "admin";
     }
 
+    /**
+     * find by filter
+     * @param model
+     * @param productFilter     String productMark; String productModel; BigDecimal price;
+     * @return all.html
+     */
     @GetMapping("/filter")
     public String findAll(Model model, @ModelAttribute ProductFilter productFilter){
         model.addAttribute("products", storageService.getAllByFilter(productFilter));
@@ -54,15 +70,38 @@ public class StorageAdminController{
         return "all";
     }
 
+    /**
+     * get method for create form
+     * @param model
+     * @param create
+     * @return create.html
+     */
     @GetMapping("/startCreate")
     public String create(Model model, @ModelAttribute("products") CreateEditProductDTO create){
         model.addAttribute("products", create);
         return "create";
     }
+
+    /**
+     * method for postman
+     * @param model
+     * @param id of product
+     * @param readProductDTO
+     * @return
+     */
     @GetMapping("/{id}/startUpdate")
     public String update(Model model, @PathVariable Long id, @ModelAttribute("products") ReadProductDTO readProductDTO){
         return "redirect:/v4/"+id;
     }
+
+    /**
+     * CRUD craete
+     * @param create
+     * @param bindingResult collect all errors from @Validated
+     * @param redirectAttributes redirect with object params
+     * @return
+     * @throws IOException
+     */
     @PostMapping(value = "/create")
     public String create(@ModelAttribute CreateEditProductDTO create, BindingResult bindingResult,
                          RedirectAttributes redirectAttributes) throws IOException {
@@ -83,6 +122,15 @@ public class StorageAdminController{
             storageService.upload(productImage.getOriginalFilename(), productImage.getInputStream());
         }
     }
+
+    /**
+     * CRUD update with validation for image
+     * @param update
+     * @param id
+     * @param bindingResult
+     * @param redirectAttributes
+     * @return "redirect:/v4/"+id;
+     */
     @PostMapping(value = "/{id}/update")
     public String update(@ModelAttribute @Validated CreateEditProductDTO update, @PathVariable Long id,
                          BindingResult bindingResult,RedirectAttributes redirectAttributes){
@@ -107,6 +155,11 @@ public class StorageAdminController{
         return "redirect:/v4/"+id;
     }
 
+    /**
+     * CRUD delete
+     * @param id of product
+     * @return "redirect:/v4"
+     */
     @PostMapping("/{id}/delete")
     public String delete(@PathVariable Long id){
         if(!storageService.delete(id)){
@@ -115,6 +168,16 @@ public class StorageAdminController{
         return "redirect:/v4";
     }
 
+    /**
+     * this method doesn't use because you can just change value
+     * @param model
+     * @param id of product
+     * @param orderDTO
+     * @param bindingResult
+     * @param redirectAttributes
+     * @param userId
+     * @return
+     */
     @PostMapping("/{id}/reservation")
     public String reservation(Model model, @PathVariable("id") Long id, @ModelAttribute @Validated OrderDTO orderDTO,
                               BindingResult bindingResult, RedirectAttributes redirectAttributes,
@@ -127,6 +190,15 @@ public class StorageAdminController{
         return "redirect:/v4/"+id;
     }
 
+    /**
+     * unreservation
+     * @param model
+     * @param id
+     * @param orderDTO
+     * @param bindingResult
+     * @param redirectAttributes
+     * @return
+     */
     @PostMapping("/{id}/unreservation")
     public String unReservation(Model model, @PathVariable("id") Long id, @ModelAttribute @Validated OrderDTO orderDTO,
                                 BindingResult bindingResult, RedirectAttributes redirectAttributes){

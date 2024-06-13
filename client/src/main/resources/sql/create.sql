@@ -44,6 +44,6 @@ insert into buy_products(product_id, user_id, product_mark, product_model, price
 (3,3,'Материнская плата MSI MPG', 'B550 GAMING PLUS', 14840.00, 3);
 
 insert into reserved_products(product_id, user_id, product_mark, product_model, price, amount) values
- (1,1, 'Материнская плата MSI PRO', 'H610M-E DDR4', 7990.00, 1),
-(2,2,'Материнская плата ASROCK H670M PRO', 'RS', 11140.00, 2),
-(3,3,'Материнская плата MSI MPG', 'B550 GAMING PLUS', 14840.00, 3);
+ (1,1, 'Материнская плата MSI PRO', 'H610M-E DDR4', 7990.00, 0),
+(2,2,'Материнская плата ASROCK H670M PRO', 'RS', 11140.00, 0),
+(3,3,'Материнская плата MSI MPG', 'B550 GAMING PLUS', 14840.00, 0);

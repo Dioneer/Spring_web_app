@@ -19,13 +19,13 @@ spring:
             provider: keycloak
             authorization-grant-type: client_credentials
             client-id: storage-app
-            client-secret: aDrAC2X0SvF450LS6vAR1pZcGRNvDFyM
+            client-secret: RdL5isAzSmbsaJ03pHJJWGZVCHtEgpOP
             scope:
               - greetings
           storage-app-authorization-code:
             provider: keycloak
             client-id: storage-app
-            client-secret: aDrAC2X0SvF450LS6vAR1pZcGRNvDFyM
+            client-secret: RdL5isAzSmbsaJ03pHJJWGZVCHtEgpOP
             scope:
               - openid
               - microprofile-jwt
