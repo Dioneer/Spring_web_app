@@ -28,21 +28,31 @@ public class ClientController {
 
     private final ClientService clientService;
 
+    /**
+     * makes the list of roles available to all controllers
+     * @return List<Role>
+     */
+
     @ModelAttribute("roles")
     public List<Role> getRole(){
         return Arrays.asList(Role.values());
     }
 
+    /**
+     * start page for all urls that are forbidden by spring security
+     * @return html page of login
+     */
     @GetMapping("/login")
     public String start(){
         return "login";
     }
 
     /**
-     *
-     * @param model
-     * @param currentUser
-     * @return
+     * Successful registration and authorization are transferred here,
+     * and query parameter point id is assigned for further tracking of actions
+     * @param model the standard java parameter
+     * @param currentUser after registration/authorization, receive UserDetails
+     * @return redirect to storage page
      */
     @GetMapping("/income")
     public String authorisation(Model model, @AuthenticationPrincipal UserDetails currentUser){
@@ -51,6 +61,11 @@ public class ClientController {
         return "redirect:/v3/storage?id="+user.getId();
     }
 
+    /**
+     * the controller is used from storageController
+     * @param id of user
+     * @return user's personal account as user.html;
+     */
     @GetMapping("/{id}")
     public String findById(Model model, @PathVariable("id") Long id){
         clientService.findById(id).map(i-> model.addAttribute("user", i))
@@ -59,6 +74,14 @@ public class ClientController {
         return "user";
     }
 
+    /**
+     * the standard CRUD operation update
+     * @param update
+     * @param id of user
+     * @param bindingResult collects errors from @Validated
+     * @param redirectAttributes redirects with the object data for error handling
+     * @return redirect to a personal account
+     */
     @PostMapping("/{id}/update")
     public String updateUser(@ModelAttribute("user") @Validated CreateUpdateUserDTO update, @PathVariable("id") Long id,
     BindingResult bindingResult, RedirectAttributes redirectAttributes){
@@ -71,6 +94,13 @@ public class ClientController {
         return "redirect:/v3/users/"+read.getId();
     }
 
+    /**
+     * the standard CRUD operation create
+     * @param create
+     * @param bindingResult collects errors from @Validated
+     * @param redirectAttributes redirects with the object data for error handling
+     * @return redirect to storage
+     */
     @PostMapping("/create")
     public String createUser(@ModelAttribute("user") @Validated CreateUpdateUserDTO create,
                              BindingResult bindingResult, RedirectAttributes redirectAttributes){
@@ -83,6 +113,12 @@ public class ClientController {
         return "redirect:/v3/storage?id="+read.getId();
     }
 
+    /**
+     * password encryption is not enabled, so everyone's password is the same. Further work is required
+     * @param model the standard java object
+     * @param create create person after registration
+     * @return html page registration.html;
+     */
     @GetMapping("/registration")
     public String registration(Model model, @ModelAttribute("user") CreateUpdateUserDTO create){
         model.addAttribute("user", create);
@@ -90,6 +126,11 @@ public class ClientController {
         return "registration";
     }
 
+    /**
+     * CRUD operation delete
+     * @param id of user
+     * @return to login/registration page
+     */
     @PostMapping("/{id}/delete")
     public String deleteUser(@PathVariable("id") Long id){
         if(!clientService.deleteUser(id)){
@@ -97,7 +138,5 @@ public class ClientController {
         }
         return "redirect:/v3/users";
     }
-
-
 
 }

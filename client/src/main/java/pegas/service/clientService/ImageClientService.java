@@ -12,9 +12,16 @@ import java.util.Optional;
 
 @Service
 public class ImageClientService {
+    /**
+     * path for save image
+     */
     @Value("${image.path.part}")
     private String bucket;
 
+    /**
+     * upload images
+     * @param imagePath from config
+     */
     @SneakyThrows
     public void upload(String imagePath, InputStream inputStream){
         Path fullPath = Path.of(bucket, imagePath);
@@ -23,6 +30,12 @@ public class ImageClientService {
             Files.write(fullPath, inputStream.readAllBytes(), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
         }
     }
+
+    /**
+     * get images
+     * @param imagePath from config
+     * @return byte[] for rest
+     */
     @SneakyThrows
     public Optional<byte[]> get(String imagePath){
         Path fullPath = Path.of(bucket, imagePath);

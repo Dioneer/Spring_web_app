@@ -28,12 +28,26 @@ public class PaymentController {
         return "payment";
     }
 
+    /**
+     * find payment table of user
+     * @param model standard object of java
+     * @param id of user
+     * @return view of html page
+     */
     @GetMapping("/{id}")
     public String findByUserId(Model model, @PathVariable Long id){
         model.addAttribute("payments", paymentApi.findById(id));
         return "payment";
     }
 
+    /**
+     *
+     * @param model standard object of java
+     * @param userCartDto dto for rest transfer
+     * @param bindingResult collects all errors of validated
+     * @param redirectAttributes redirect with object parameters
+     * @return view of html page
+     */
     @PostMapping("/cart")
     public String findByCartNumber(Model model, @ModelAttribute @Validated UserCartDto userCartDto,
                                    BindingResult bindingResult, RedirectAttributes redirectAttributes){

@@ -26,6 +26,10 @@ public class StorageApi {
 
     private final RestClient restClient;
 
+    /**
+     * connect for eureka with help don't use direct paths
+     * @return
+     */
     private String serviceURL() {
         ServiceInstance instance = discoveryClient.getInstances("appStorage")
                 .stream().findAny()
@@ -35,6 +39,10 @@ public class StorageApi {
         return uriComponentsBuilder.toUriString();
     }
 
+    /**
+     * get all products
+     * @return
+     */
     public ReadProductDTO[] getAll(){
         return restClient.get()
                 .uri(serviceURL()+"/reg")
@@ -51,6 +59,11 @@ public class StorageApi {
                 .body(ReadProductDTO[].class);
     }
 
+    /**
+     * find images from products
+     * @param id of product
+     * @return byte[] of images
+     */
     public byte[] findImage(Long id){
         return restClient.get()
                 .uri(serviceURL()+"/"+id+"/image")
@@ -67,6 +80,11 @@ public class StorageApi {
                 .body(byte[].class);
     }
 
+    /**
+     * get not all products
+     * @param productFilter filter for filtering products
+     * @return array og productDTO
+     */
     public ReadProductDTO[] getAllByFilter(ProductFilter productFilter){
         return restClient.post()
                 .uri(serviceURL() +"/filter")
@@ -85,6 +103,11 @@ public class StorageApi {
                 .body(ReadProductDTO[].class);
     }
 
+    /**
+     * find by id of product
+     * @param id of product
+     * @return
+     */
     public ReadProductDTO getById(Long id){
         return restClient.get()
                 .uri(serviceURL() +"/"+id)
@@ -100,6 +123,13 @@ public class StorageApi {
                                     + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
     }
+
+    /**
+     * reserve products
+     * @param reservation DTO with amount
+     * @param id of product
+     * @return product which was reserve
+     */
     @TrackUserAction
     public ReadProductDTO reservation(OrderDTO reservation, Long id){
         return restClient.post()
@@ -118,6 +148,13 @@ public class StorageApi {
                                     + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
     }
+
+    /**
+     * unreserve products
+     * @param reservation DTO with amount
+     * @param id of product
+     * @return product which was reserve
+     */
     @TrackUserAction
     public ReadProductDTO unReservation(OrderDTO reservation, Long id){
         return restClient.post()
@@ -136,6 +173,13 @@ public class StorageApi {
                                     + res.getStatusCode() + res.getStatusText());})
                 .body(ReadProductDTO.class);
     }
+
+    /**
+     * sale product
+     * @param reservation DTO with amount
+     * @param id of product
+     * @return product which was bought
+     */
     @TrackUserAction
     public ReadProductDTO sale(OrderDTO reservation, Long id){
         return restClient.post()

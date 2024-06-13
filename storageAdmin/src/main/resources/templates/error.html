@@ -2,11 +2,26 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Error</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="http://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/style.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404</title>
 </head>
+
 <body>
-<div>
-    <p style="color: red" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+<div class="wrapper">
+    <main class="middleEarth">
+        <div class="middleEarth__body body-text">
+            <div class="body-text__title">SORRY:(</div>
+            <div class="body-text__text"><span th:each="error : ${errors}" th:text="${error}">Error message</span></div>
+            <div class="body-text__text"><span th:text="${error}">Error message</span></div>
+        </div>
+    </main>
 </div>
+    <script src="/swiper.min.js"></script>
+    <script src="/app.js"></script>
 </body>
+
 </html>

@@ -1,26 +1,148 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="format-detection" content="telephone=no">
+	<link rel="stylesheet" href="http://unpkg.com/swiper/swiper-bundle.min.css">
+	<link rel="stylesheet" href="/style.min.css">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Вход</title>
 </head>
+
 <body>
-<div style="color: red" th:if="${param.error}">
-    Invalid username and password.
+<div class="wrapper">
+	<header class="header">
+		<div class="container">
+			<div class="header__top top-header">
+				<div class="top-header__content _container">
+					<div class="top-header__column">
+						<div class="top-header__menu menu">
+							<div class=" menu__burger">
+								<span></span>
+							</div>
+							<nav class="menu__body">
+								<ul class="menu__list">
+									<li><a href="#" class="menu__link">Бренды</a></li>
+									<li><a href="#" class="menu__link">Распродажи</a></li>
+									<li><a href="#" class="menu__link">Доставка и сборка</a></li>
+								</ul>
+								<ul class="menu__list">
+									<li><a href="#" class="menu__link">Гарантия</a></li>
+									<li><a href="#" class="menu__link">Оплата</a></li>
+									<li><a href="#" class="menu__link">Контакты</a></li>
+								</ul>
+							</nav>
+						</div>
+					</div>
+					<div class="top-header__column">
+						<a href="" class="top-header__logo">
+							<img src="/img/logo-footer.jpg">
+						</a>
+					</div>
+					<div class="top-header__column">
+						<div class="top-header__contacts contacts-header">
+							<div class="contacts-header__column">
+								<div class="contacts-header__item contacts-header__item_icon">
+									<div class="contacts-header__label">Москва</div>
+									<a href="tel:84991234567" class="contacts-header__phone">8-499-123-45-67</a>
+								</div>
+							</div>
+							<div class="contacts-header__column">
+								<div class="contacts-header__item">
+									<div class="contacts-header__label">Бесплатно по России</div>
+									<a href="tel:88001234567" class="contacts-header__phone">8-800-123-45-67</a>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="header__bottom bottom-header">
+				<div class="bottom-header__container _container">
+					<div class="bottom-header__column">
+						<ul data-da="menu__body,640,2" class="bottom-header__actions actions-header">
+							<li>
+								<form th:action="@{/v3/users/login}" method="пуе" class="fragment">
+									<button type="submit" class="actions-header__login">Вход</button>
+								</form>
+							</li>
+							<li>
+								<form th:action="@{/v3/users/logout}" method="post" class="fragment">
+									<button type="submit" class="actions-header__reg">Выход</button>
+								</form>
+							</li>
+							<li>
+								<form th:action="@{/v3/storage/home}" method="post" class="fragment">
+									<button type="submit" class="actions-header__email">ЛК</button>
+								</form>
+							</li>
+						</ul>
+					</div>
+					<div class="bottom-header__column">
+						<div data-da="menu__body,640,3" class="bottom-header__info info-header">
+							<div class="info-header__column">
+								<a href="" class="info-header_callback"><span>Обратный звонок</span></a>
+							</div>
+							<div class="info-header__column">
+								<div class="info-header__schedule">
+									<p><span>Пн-Пт</span>09:00-21:00</p>
+									<p><span>Сб-Вс</span>10:00-22:00</p>
+								</div>
+							</div>
+							<div class="info-header__column">
+								<a href="" class="info-header__cart">
+								</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	<div class="page-form">
+		<main class="middleEarth">
+			<div class="middleEarth__body body-text">
+				<div class="checkout__title">Вход</div>
+				<div th:if="${param.error}" class="error">
+					Invalid username or/and password.
+				</div>
+				<div class="content-checkout__body">
+					<form th:action="@{/v3/users/login}" method="post" class="content-checkout__form form-checkout">
+						<div class="form-checkout__column">
+							<div class="form-checkout__line">
+								<div class="form-checkout__label">Username: <span>*</span></div>
+								<div class="form-checkout__input">
+									<input type="text" data-value="" data-error="ошибка" autocomplete="off"
+										   name="username" class="input">
+								</div>
+							</div>
+							<div class="form-checkout__line">
+								<div class="form-checkout__label">Password: <span>*</span>
+								</div>
+								<div class="form-checkout__input">
+									<input type="text" data-value="" data-error="ошибка" autocomplete="off"
+										   name="password" class="input">
+								</div>
+							</div>
+						</div>
+						<div class="form-checkout__bittons form-checkout__bittons_log">
+							<button type="submit"
+									class="order-checkout__btn">Войти</button>
+						</div>
+					</form>
+					<form th:action="@{/v3/users/registration}" class="form-checkout__bittons_form" method="get">
+						<button type="submit"
+								class="order-checkout__btn">Регистрация</button>
+					</form>
+				</div>
+			</div>
+		</main>
+	</div>
 </div>
-<form th:action="@{/v3/users/login}" method="post">
-<!--    <input type="hidden" th:name="${_csrt.parameterName}" th:value="${_csrf.token}">-->
-    <label for="username">Username:</span>
-        <input id="username" type="text" name="username">
-    </label><br>
-    <label for="password">Password:</span>
-        <input id="password" type="password" name="password">
-    </label><br>
-    <button type="submit">Login</button>
-</form>
-<form th:action="@{/v3/users/registration}" method="get">
-    <button type="submit">Registration</button>
-</form>
+<script src="/swiper.min.js"></script>
+<script src="/app.js"></script>
 </body>
+
 </html>

@@ -2,18 +2,551 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Payment</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="format-detection" content="telephone=no">
+    <link rel="stylesheet" href="http://unpkg.com/swiper/swiper-bundle.min.css">
+    <link rel="stylesheet" href="/style.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Товар</title>
 </head>
+
 <body>
-<div th:insert="~{fragment::home}"></div>
-<div>
-    <p th:text="|Id: ${payments.id}|">Product</p>
-    <p th:text="|CartNumber: ${payments.cartNumber}|">cartNumber</p>
-    <p th:text="|Spend: ${payments.storageBalance}|">storageBalance</p>
-    <p th:text="|CartBalance: ${payments.cartBalance}|">cartBalance</p>
+<div class="wrapper">
+    <header class="header">
+        <div class="container">
+            <div class="header__top top-header">
+                <div class="top-header__content _container">
+                    <div class="top-header__column">
+                        <div class="top-header__menu menu">
+                            <div class=" menu__burger">
+                                <span></span>
+                            </div>
+                            <nav class="menu__body">
+                                <ul class="menu__list">
+                                    <li><a href="#" class="menu__link">Бренды</a></li>
+                                    <li><a href="#" class="menu__link">Распродажи</a></li>
+                                    <li><a href="#" class="menu__link">Доставка и сборка</a></li>
+                                </ul>
+                                <ul class="menu__list">
+                                    <li><a href="#" class="menu__link">Гарантия</a></li>
+                                    <li><a href="#" class="menu__link">Оплата</a></li>
+                                    <li><a href="#" class="menu__link">Контакты</a></li>
+                                </ul>
+                            </nav>
+                        </div>
+                    </div>
+                    <div class="top-header__column">
+                        <a href="" class="top-header__logo">
+                            <img src="/img/logo-footer.jpg">
+                        </a>
+                    </div>
+                    <div class="top-header__column">
+                        <div class="top-header__contacts contacts-header">
+                            <div class="contacts-header__column">
+                                <div class="contacts-header__item contacts-header__item_icon">
+                                    <div class="contacts-header__label">Москва</div>
+                                    <a href="tel:84991234567" class="contacts-header__phone">8-499-123-45-67</a>
+                                </div>
+                            </div>
+                            <div class="contacts-header__column">
+                                <div class="contacts-header__item">
+                                    <div class="contacts-header__label">Бесплатно по России</div>
+                                    <a href="tel:88001234567" class="contacts-header__phone">8-800-123-45-67</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="header__bottom bottom-header">
+                <div class="bottom-header__container _container">
+                    <div class="bottom-header__column">
+                        <ul data-da="menu__body,640,2" class="bottom-header__actions actions-header">
+                            <li>
+                                <form th:action="@{/v3/users//login}" method="post" class="fragment">
+                                    <button type="submit" class="actions-header__login">Вход</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form th:action="@{/v3/users/logout}" method="post" class="fragment">
+                                    <button type="submit" class="actions-header__reg">Выход</button>
+                                </form>
+                            </li>
+                            <li>
+                                <form th:action="@{/v3/storage/home}" method="post" class="fragment">
+                                    <button type="submit" class="actions-header__email">ЛК</button>
+                                </form>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="bottom-header__column">
+                        <div data-da="menu__body,640,3" class="bottom-header__info info-header">
+                            <div class="info-header__column">
+                                <a href="" class="info-header_callback"><span>Обратный звонок</span></a>
+                            </div>
+                            <div class="info-header__column">
+                                <div class="info-header__schedule">
+                                    <p><span>Пн-Пт</span>09:00-21:00</p>
+                                    <p><span>Сб-Вс</span>10:00-22:00</p>
+                                </div>
+                            </div>
+                            <div class="info-header__column">
+                                <a href="" class="info-header__cart">
+                                    <span th:text="${count}">12</span>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <div class="container">
+        <main class="page">
+            <aside class="page__side">
+                <nav class="page__menu menu-page">
+                    <div class="menu-page__header">
+                        <div class="menu-page__title">
+                            Каталог товаров
+                        </div>
+                        <div class="menu-page__burger">
+                            <span></span>
+                        </div>
+                    </div>
+                    <div class="menu-page__body">
+                        <ul class="menu-page__list">
+                            <li class="menu-page__parent">
+                                <a href="" class="menu-page__link">Беговые
+                                    дорожки</a>
+                                <div class="menu-page__submenu submenu-page">
+                                    <div class="submenu-page__item">
+                                        <ul class="submenu-page__menu">
+                                            <li><a href="" class="submenu-page__link">Всепогодный</a></li>
+                                            <li><a href="" class="submenu-page__link">Для помещения</a></li>
+                                            <li><a href="" class="submenu-page__link">Профессиональный</a></li>
+                                            <li><a href="" class="submenu-page__link">Любительский</a></li>
+                                        </ul>
+                                        <div class="submenu-page__product">
+                                            <div class="item-product">
+                                                <div class="item-product__labels">
+                                                </div>
+                                                <a href="" class="item-product__image">
+                                                    <img src="/img/product/01.jpg">
+                                                </a>
+                                                <div class="item-product__body">
+                                                    <a href="" class="item-product__title">
+                                                        Домашний теннисный стол
+                                                    </a>
+                                                    <div class="item-product__footer">
+                                                        <div class="item-product__old-price rub">64 990</div>
+                                                        <a href="" class="item-product__add"></a>
+                                                        <div class="item-product__price rub">64 990</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="" class="menu-page__link">Гребные тренажеры</a>
+                            </li>
+                            <li class="menu-page__parent">
+                                <a href="" class="menu-page__link">Теннисные
+                                    столы</a>
+                                <div class="menu-page__submenu submenu-page">
+                                    <div class="submenu-page__item">
+                                        <ul class="submenu-page__menu">
+                                            <li><a href="" class="submenu-page__link">Всепогодный</a></li>
+                                            <li><a href="" class="submenu-page__link">Для помещения</a></li>
+                                            <li><a href="" class="submenu-page__link">Профессиональный</a></li>
+                                            <li><a href="" class="submenu-page__link">Любительский</a></li>
+                                        </ul>
+                                        <div class="submenu-page__product">
+                                            <div class="item-product">
+                                                <div class="item-product__labels">
+                                                </div>
+                                                <a href="" class="item-product__image">
+                                                    <img src="/img/product/01.jpg">
+                                                </a>
+                                                <div class="item-product__body">
+                                                    <a href="" class="item-product__title">
+                                                        Домашний теннисный стол
+                                                    </a>
+                                                    <div class="item-product__footer">
+                                                        <div class="item-product__old-price rub">64 990</div>
+                                                        <a href="" class="item-product__add"></a>
+                                                        <div class="item-product__price rub">64 990</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="" class="menu-page__link">Баскетбол</a>
+                            </li>
+                            <li>
+                                <a data-item="2" href="" class="menu-page__link">Массажные
+                                    кресла</a>
+                            </li>
+                            <li>
+                                <a href="" class="menu-page__link">Массажные столы</a>
+                            </li>
+                            <li class="menu-page__parent">
+                                <a href="" class="menu-page__link">Силовые
+                                    тренажеры</a>
+                                <div class="menu-page__submenu submenu-page">
+                                    <div class="submenu-page__item">
+                                        <ul class="submenu-page__menu">
+                                            <li><a href="" class="submenu-page__link">Всепогодный</a></li>
+                                            <li><a href="" class="submenu-page__link">Для помещения</a></li>
+                                            <li><a href="" class="submenu-page__link">Профессиональный</a></li>
+                                            <li><a href="" class="submenu-page__link">Любительский</a></li>
+                                        </ul>
+                                        <div class="submenu-page__product">
+                                            <div class="item-product">
+                                                <div class="item-product__labels">
+                                                    <div class="item-product__label">Товар дня</div>
+                                                </div>
+                                                <a href="" class="item-product__image">
+                                                    <img src="/img/product/01.jpg">
+                                                </a>
+                                                <div class="item-product__body">
+                                                    <a href="" class="item-product__title">
+                                                        Домашний теннисный стол
+                                                    </a>
+                                                    <div class="item-product__footer">
+                                                        <div class="item-product__old-price rub">64 990</div>
+                                                        <a href="" class="item-product__add"></a>
+                                                        <div class="item-product__price rub">64 990</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="" class="menu-page__link">Батуты</a>
+                            </li>
+                            <li class="menu-page__parent">
+                                <a href="" class="menu-page__link">Детские
+                                    горки</a>
+                                <div class="menu-page__submenu submenu-page">
+                                    <div class="submenu-page__item">
+                                        <ul class="submenu-page__menu">
+                                            <li><a href="" class="submenu-page__link">Всепогодный</a></li>
+                                            <li><a href="" class="submenu-page__link">Для помещения</a></li>
+                                            <li><a href="" class="submenu-page__link">Профессиональный</a></li>
+                                            <li><a href="" class="submenu-page__link">Любительский</a></li>
+                                        </ul>
+                                        <div class="submenu-page__product">
+                                            <div class="item-product">
+                                                <div class="item-product__labels">
+                                                    <div class="item-product__label">Товар дня</div>
+                                                </div>
+                                                <a href="" class="item-product__image">
+                                                    <img src="/img/product/01.jpg">
+                                                </a>
+                                                <div class="item-product__body">
+                                                    <a href="" class="item-product__title">
+                                                        Домашний теннисный стол
+                                                    </a>
+                                                    <div class="item-product__footer">
+                                                        <div class="item-product__old-price rub">64 990</div>
+                                                        <a href="" class="item-product__add"></a>
+                                                        <div class="item-product__price rub">64 990</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li>
+                                <a href="" class="menu-page__link">Дачная мебель</a>
+                            </li>
+                            <li>
+                                <a href="" class="menu-page__link">Спортивные комплексы</a>
+                            </li>
+                            <li>
+                                <a href="" class="menu-page__link">Аксессуары</a>
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                <div data-da="page__content,992,last" class="page__content-side">
+                    <div class="page__side-news news-side">
+                        <a href="" class="side-title">Новости</a>
+                        <div class="news-side__items">
+                            <div class="news-side__item">
+                                <a href="" class="news-side__title">Lorem ipsum dolor sit amet consectetur.</a>
+                                <div class="news-side__body">
+                                    <div class="news-side__data">
+                                        <span>12</span>авг
+                                    </div>
+                                    <div class="news-side__text">
+                                        Lorem ipsum dolor sit amet consectetur
+                                        adipisicing elit. Distinctio temporibus
+                                        ad ipsa quas, dolor quae!
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="news-side__item">
+                                <a href="" class="news-side__title">Lorem ipsum dolor sit amet consectetur.</a>
+                                <div class="news-side__body">
+                                    <div class="news-side__data">
+                                        <span>19</span>авг
+                                    </div>
+                                    <div class="news-side__text">
+                                        Lorem ipsum dolor sit amet consectetur
+                                        adipisicing elit. Distinctio temporibus
+                                        ad ipsa quas, dolor quae!
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="page__side-reviews reviews-sids">
+                        <a href="" class="reviews-sids__title">Отзывы</a>
+                        <div class="reviews-sids__items">
+                            <a href="" class="reviews-sids__item">
+                                <div class="reviews-sids__header">
+                                    <div class="reviews-sids__user">Lorem, ipsum</div>
+                                    <div class="reviews-sids__data">11.02.2024</div>
+                                </div>
+                                <div class="reviews-sids__body">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem, est
+                                    saepe!
+                                    Voluptates doloribus perspiciatis eaque! Rem provident qui soluta nostrum.
+                                </div>
+                            </a>
+                            <a href="" class="reviews-sids__item">
+                                <div class="reviews-sids__header">
+                                    <div class="reviews-sids__user">Lorem, ipsum</div>
+                                    <div class="reviews-sids__data">11.02.2024</div>
+                                </div>
+                                <div class="reviews-sids__body">
+                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Exercitationem, est
+                                    saepe!
+                                    Voluptates doloribus perspiciatis eaque! Rem provident qui soluta nostrum.
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+            <div class="page__content">
+                <form action="#" class="page__search search-page">
+                    <div class="search-page__select">
+                        <div class="search-page__title">
+                            <span>Везде</span><span>Выбрано:<span class="search-page__count"></span></span>
+                        </div>
+                        <div class="search-page__categories categories-search">
+                            <div class="categories-search__row">
+                                <div class="categories-search__column">
+                                    <ul class="categories-search__list">
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Беговые дорожки</span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Велотренажеры</span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Гребные тренажеры</span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Вибромассажеры</span></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="categories-search__column">
+                                    <ul class="categories-search__list">
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Беговые дорожки</span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Велотренажеры</span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Гребные тренажеры</span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Вибромассажеры</span></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="categories-search__column">
+                                    <ul class="categories-search__list">
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Беговые дорожки</span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Велотренажеры</span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Гребные тренажеры</span></span>
+                                            </div>
+                                        </li>
+                                        <li>
+                                            <div class="categories-search__checkbox checkbox">
+                                                <input type="checkbox" id="formcheck" data-error="ошибка"
+                                                       autocomplete="off" name="checkyourself" class="checkbox__input">
+                                                <span class="checkbox-text"><span>Вибромассажеры</span></span>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="search-page__input">
+                        <input type="text" data-value="" data-error="ошибка" autocomplete="off" name="name"
+                               class="input">
+                    </div>
+                    <button type="submit" class="search-page__btn btn">Найти</button>
+                </form>
+                <div class="product">
+                    <div class="product__title">Данные счета:</div>
+                    <div class="product__content">
+                            <p class="reviews-count" th:text="|Id: ${payments.id}|"></p>
+                            <p class="reviews-count" th:text="|CartNumber: ${payments.cartNumber}|"></p>
+                            <p class="reviews-count" th:text="|Spend: ${payments.storageBalance}|"></p>
+                            <p class="reviews-count" th:text="|CartBalance: ${payments.cartBalance}|"></p>
+                    </div>
+                    <div th:if="${errors}">
+                        <p class="error" th:each="error : ${errors}" th:text="${error.defaultMessage}">Error message</p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        <div class="page__info info-menu">
+            <div class="info-menu__container">
+                <div class="info-menu__body">
+                    <div class="info-menu__line">
+                        <div class="info-menu__label">Информация:</div>
+                        <ul class="info-menu__list">
+                            <li><a href="" class="info-menu__link">Бренды</a></li>
+                            <li><a href="" class="info-menu__link">Доставка</a></li>
+                            <li><a href="" class="info-menu__link">Распродажа</a></li>
+                            <li><a href="" class="info-menu__link">Контакты</a></li>
+                            <li><a href="" class="info-menu__link">Отзывы</a></li>
+                        </ul>
+                    </div>
+                    <div class="info-menu__line">
+                        <div class="info-menu__label">Помощь:</div>
+                        <ul class="info-menu__list">
+                            <li><a href="" class="info-menu__link">Как заказать</a></li>
+                            <li><a href="" class="info-menu__link">Доставка</a></li>
+                            <li><a href="" class="info-menu__link">Оплата</a></li>
+                            <li><a href="" class="info-menu__link">Гарантия</a></li>
+                            <li><a href="" class="info-menu__link">Возврат</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+            <div class="footer__body">
+                <div class="footer__column">
+                    <div class="footer__block block-footer">
+                        <div class="block-footer__column">
+                            <a href="" class="logo-footer">
+                                <img src="/img/logo-footer.jpg" alt="">
+                            </a>
+                            <div class="block-footer__phones">
+                                <p><a href="tel:84951234545" class="block-footer__phone">8-495-123-45-45</a></p>
+                                <p><a href="tel:84951234546" class="block-footer__phone">8-495-123-45-46</a></p>
+                            </div>
+                        </div>
+                        <div class="block-footer__column">
+                            <div class="block-footer__delivery delivery-footer">
+                                <div class="delivery-footer__title">Lorem, ipsum dolor</div>
+                                <div class="delivery-footer__items">
+                                    <div class="delivery-footer__item">
+                                        <img src="/img/delivery/01.jpg" alt="">
+                                    </div>
+                                    <div class="delivery-footer__item">
+                                        <img src="/img/delivery/02.jpg" alt="">
+                                    </div>
+                                    <div class="delivery-footer__item">
+                                        <img src="/img/delivery/03.jpg" alt="">
+                                    </div>
+                                    <div class="delivery-footer__item">
+                                        <img src="/img/delivery/04.jpg" alt="">
+                                    </div>
+                                    <div class="delivery-footer__item">
+                                        <img src="/img/delivery/05.jpg" alt="">
+                                    </div>
+                                    <div class="delivery-footer__item">
+                                        <img src="/img/delivery/06.jpg" alt="">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="footer__payments"><img src="/img/icon/payment.png" alt=""></div>
+                </div>
+            </div>
+            <div class="footer__bottom">
+                <div class="footer__copy">Lorem ipsum dolor sit</div>
+                <div class="footer__social social-footer">
+                    <a href="" class="social-footer__item"><img src="/img/icon/social/01.png" alt=""></a>
+                    <a href="" class="social-footer__item"><img src="/img/icon/social/02.png" alt=""></a>
+                    <a href="" class="social-footer__item"><img src="/img/icon/social/03.png" alt=""></a>
+                    <a href="" class="social-footer__item"><img src="/img/icon/social/04.png" alt=""></a>
+                </div>
+            </div>
+        </footer>
+    </div>
 </div>
+<script src="/swiper.min.js"></script>
+<script src="/app.js"></script>
 </body>
-<div th:if="${errors}">
-    <p style="color: red" th:each="error : ${errors}" th:text="${error}">Error message</p>
-</div>
+
 </html>

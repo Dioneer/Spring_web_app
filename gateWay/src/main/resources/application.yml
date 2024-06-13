@@ -1,0 +1,13 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: APIGateway
+  cloud:
+    gateway:
+      routes:
+        -id: app1 (label api)
+        uri: http://localhost:8080 (address sapi)
+        predicates:
+          -Path=/tasks/** (main path)

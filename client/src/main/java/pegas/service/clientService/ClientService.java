@@ -48,7 +48,6 @@ public class ClientService implements CRUDService, UserDetailsService {
 
     public void createBuy(Long id, int amount, Long userId) {
         BuyProduct buyProduct = buyRepository.findByUserIdAndProductId(userId, id).orElse(null);
-        System.out.println(buyProduct);
         if(buyProduct==null) {
             ReadProductDTO productDTO = storageApi.getById(id);
             CreateBuyDTO create = new CreateBuyDTO(userId, productDTO.getId(), productDTO.getProductMark(),

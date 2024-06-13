@@ -1,0 +1,17 @@
+{
+	"ulid": "01J08S36PYWFQ136KABNQSA7BD",
+	"minTime": 1718229600731,
+	"maxTime": 1718236800000,
+	"stats": {
+		"numSamples": 257050,
+		"numSeries": 1325,
+		"numChunks": 2650
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01J08S36PYWFQ136KABNQSA7BD"
+		]
+	},
+	"version": 1
+}

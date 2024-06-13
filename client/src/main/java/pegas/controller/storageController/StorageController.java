@@ -32,6 +32,8 @@ public class StorageController {
     public String findAllProducts(Model model,  @RequestParam(name = "id", required = false) Long userId){
         model.addAttribute("products", storageApi.getAll());
         model.addAttribute("userId", userId);
+        model.addAttribute("count", clientService.findById(userId).map(i->i.getReserve().size()).
+                orElse(0));
         return "index";
     }
 
@@ -41,16 +43,20 @@ public class StorageController {
     }
 
     @GetMapping("/filter")
-    public String findAllProductsByFilter(Model model, ProductFilter productFilter){
+    public String findAllProductsByFilter(Model model, ProductFilter productFilter,@SessionAttribute("userId") Long userId){
         model.addAttribute("products", storageApi.getAllByFilter(productFilter));
         model.addAttribute("filter", productFilter);
+        model.addAttribute("count", clientService.findById(userId).map(i->i.getReserve().size()).
+                orElse(0));
         return "index";
     }
 
     @GetMapping("/{id}")
-    public String findProductsById(Model model, @PathVariable("id") Long id){
+    public String findProductsById(Model model, @PathVariable("id") Long id, @SessionAttribute("userId") Long userId){
         return Optional.of(storageApi.getById(id)).map(i->{
         model.addAttribute("products", storageApi.getById(id));
+        model.addAttribute("count", clientService.findById(userId).map(j->j.getReserve().size()).
+                    orElse(0));
         return "product";
         }).orElseThrow(()-> new ResponseStatusException(HttpStatus.NOT_FOUND));
     }

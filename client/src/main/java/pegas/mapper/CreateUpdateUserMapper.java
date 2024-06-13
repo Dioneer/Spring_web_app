@@ -19,6 +19,7 @@ public class CreateUpdateUserMapper implements Mapper<CreateUpdateUserDTO, User>
         user.setLastname(create.getLastname());
         user.setBirthdayDate(create.getBirthdayDate());
         user.setRole(create.getRole());
+        user.setPassword("{noop}123");
         Optional.ofNullable(create.getMultipartFile()).filter(Predicate.not(MultipartFile::isEmpty))
                 .ifPresent(i->user.setImage(i.getOriginalFilename()));
         return user;
@@ -31,6 +32,7 @@ public class CreateUpdateUserMapper implements Mapper<CreateUpdateUserDTO, User>
         user.setLastname(update.getLastname());
         user.setBirthdayDate(update.getBirthdayDate());
         user.setRole(update.getRole());
+        user.setPassword("{noop}123");
         Optional.ofNullable(update.getMultipartFile()).filter(Predicate.not(MultipartFile::isEmpty))
                 .ifPresent(i->user.setImage(i.getOriginalFilename()));
         return user;
