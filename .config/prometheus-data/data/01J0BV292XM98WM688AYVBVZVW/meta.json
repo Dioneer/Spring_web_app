@@ -1,0 +1,17 @@
+{
+	"ulid": "01J0BV292XM98WM688AYVBVZVW",
+	"minTime": 1718373600749,
+	"maxTime": 1718380800000,
+	"stats": {
+		"numSamples": 698400,
+		"numSeries": 970,
+		"numChunks": 5868
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01J0BV292XM98WM688AYVBVZVW"
+		]
+	},
+	"version": 1
+}
