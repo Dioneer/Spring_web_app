@@ -1,0 +1,17 @@
+{
+	"ulid": "01J0DX0ERHM7JZT32RY50BBPV1",
+	"minTime": 1718395200000,
+	"maxTime": 1718402400000,
+	"stats": {
+		"numSamples": 527680,
+		"numSeries": 970,
+		"numChunks": 4850
+	},
+	"compaction": {
+		"level": 1,
+		"sources": [
+			"01J0DX0ERHM7JZT32RY50BBPV1"
+		]
+	},
+	"version": 1
+}

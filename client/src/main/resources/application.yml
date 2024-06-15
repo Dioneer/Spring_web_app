@@ -20,11 +20,31 @@ spring:
 #    storage: http://localhost:8080/api/v1
 #    payment: http://localhost:8081/api/v2
 
+#management:
+#  endpoints:
+#    web:
+#      exposure:
+#        include: prometheus,info,metrics,threaddump,health
+
 management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+    health:
+      show-details: always
+      show-components: always
+      probes:
+        enabled: true
+    shutdown:
+      enabled: true
+    info:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: prometheus,info,metrics,threaddump,health
+        include: prometheus, metrics, info, health, shutdown
 
 image:
   path:

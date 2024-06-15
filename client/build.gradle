@@ -45,6 +45,12 @@ dependencies {
   implementation 'org.springframework.boot:spring-boot-starter-actuator'
   implementation 'io.micrometer:micrometer-registry-prometheus'
   implementation 'io.micrometer:micrometer-core'
+  implementation 'org.springframework.boot:spring-boot-starter-integration'
+  implementation 'org.springframework.integration:spring-integration-http'
+  implementation 'org.springframework.integration:spring-integration-file'
+  testImplementation 'org.springframework.integration:spring-integration-test'
+
+
 }
 
 test {

@@ -18,6 +18,7 @@ import pegas.entity.ReserveProduct;
 import pegas.entity.Role;
 import pegas.entity.User;
 import pegas.service.clientService.ClientService;
+import pegas.service.integration.FileGateWay;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +29,7 @@ import java.util.List;
 public class ClientController {
 
     private final ClientService clientService;
+    private final FileGateWay fileGateWay;
 
     /**
      * makes the list of roles available to all controllers
@@ -94,6 +96,7 @@ public class ClientController {
             return "redirect:/v3/users/{id}";
         }
         ReadUserDTO read = clientService.update(update, id);
+        fileGateWay.writeToFile("updateUser.txt",read.toString());
         return "redirect:/v3/users/"+read.getId();
     }
 
@@ -113,6 +116,7 @@ public class ClientController {
             return "redirect:/v3/users/registration";
         }
         ReadUserDTO read = clientService.create(create);
+        fileGateWay.writeToFile("createUser.txt",read.toString());
         return "redirect:/v3/storage?id="+read.getId();
     }
 
@@ -139,6 +143,7 @@ public class ClientController {
         if(!clientService.deleteUser(id)){
             throw new ResponseStatusException(HttpStatus.NOT_FOUND);
         }
+        fileGateWay.writeToFile("deleteUser.txt",id.toString());
         return "redirect:/v3/users";
     }
 

@@ -15,6 +15,7 @@ import pegas.dto.storage.ProductFilter;
 import pegas.dto.userdto.ReadUserDTO;
 import pegas.entity.ReserveProduct;
 import pegas.service.clientService.ClientService;
+import pegas.service.integration.FileGateWay;
 import pegas.service.paymentService.PaymentApi;
 import pegas.service.storageService.StorageApi;
 
@@ -30,6 +31,8 @@ public class StorageController {
     private final StorageApi storageApi;
     private final ClientService clientService;
     private final PaymentApi paymentApi;
+    private final FileGateWay fileGateWay;
+
 
     /**
      * Show products after login. Add count for cart
@@ -112,6 +115,8 @@ public class StorageController {
         }
         storageApi.reservation(orderDTO, id);
         clientService.createRes(id, orderDTO.getAmount(), userId);
+        fileGateWay.writeToFile("reservation.txt",userId.toString()+" reserved "+id.toString() +" amount: "
+                +orderDTO.toString());
         return "redirect:/v3/storage?id="+userId;
     }
 
@@ -135,6 +140,8 @@ public class StorageController {
         }
         storageApi.unReservation(orderDTO, id);
         clientService.unreserved(id, orderDTO.getAmount(), userId);
+        fileGateWay.writeToFile("unreservation.txt",userId.toString()+" unreserved "+id.toString() +" amount: "
+                +orderDTO.toString());
         return "redirect:/v3/storage?id="+userId;
     }
 
@@ -164,6 +171,8 @@ public class StorageController {
         if(result==null) {
             storageApi.sale(orderDTO, id);
             clientService.createBuy(id, orderDTO.getAmount(), userId);
+            fileGateWay.writeToFile("sale.txt",userId.toString()+" bought "+id.toString() +" amount: "
+                    +orderDTO.toString());
         }else{
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, result);
         }

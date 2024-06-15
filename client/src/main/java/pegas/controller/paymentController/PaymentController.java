@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import pegas.dto.payment.TransferDTO;
 import pegas.dto.payment.UserCartDto;
+import pegas.service.integration.FileGateWay;
 import pegas.service.paymentService.PaymentApi;
 
 @Controller
@@ -16,6 +17,8 @@ import pegas.service.paymentService.PaymentApi;
 @RequestMapping("/v3/payment")
 public class PaymentController {
     private final PaymentApi paymentApi;
+    private final FileGateWay fileGateWay;
+
 
     /**
      * this method for the development of the system is not currently used
@@ -37,11 +40,12 @@ public class PaymentController {
     @GetMapping("/{id}")
     public String findByUserId(Model model, @PathVariable Long id){
         model.addAttribute("payments", paymentApi.findById(id));
+        fileGateWay.writeToFile("IdOfUserWhoFoundPayments.txt",id.toString());
         return "payment";
     }
 
     /**
-     *
+     *find payment table by cart number
      * @param model standard object of java
      * @param userCartDto dto for rest transfer
      * @param bindingResult collects all errors of validated
@@ -56,6 +60,7 @@ public class PaymentController {
             return "payment";
         }
         model.addAttribute("payments", paymentApi.cart(userCartDto));
+        fileGateWay.writeToFile("NumberOfCartWhichEasFound.txt",userCartDto.toString());
         return "payment";
     }
 
