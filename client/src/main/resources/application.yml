@@ -54,3 +54,7 @@ eureka:
   client:
     serviceUrl:
       defaultZone: http://localhost:8761/eureka
+
+integration:
+  path: ./client/messages
+

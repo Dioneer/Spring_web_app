@@ -1,5 +1,6 @@
 package pegas.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.integration.annotation.ServiceActivator;
@@ -14,6 +15,8 @@ import java.io.File;
 
 @Configuration
 public class IntegrationConfig {
+    @Value("${integration.path}")
+    private String path;
 
     @Bean
     public MessageChannel textInputChannel(){
@@ -34,7 +37,7 @@ public class IntegrationConfig {
     @Bean
     @ServiceActivator(inputChannel = "fileWriteChannel")
     public FileWritingMessageHandler myMessageHandler(){
-        FileWritingMessageHandler handler = new FileWritingMessageHandler(new File("./client/messages"));
+        FileWritingMessageHandler handler = new FileWritingMessageHandler(new File(path));
         handler.setExpectReply(false);
         handler.setFileExistsMode(FileExistsMode.APPEND);
         handler.setAppendNewLine(true);
